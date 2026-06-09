@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>L143V Core 💖</title>
     <style>
         /* Multi-Theme Palette Core (Default: Sweet Rose) */
@@ -85,7 +85,7 @@
             --border-color: #ff99ac;
         }
         body.theme-full-love .msg.me { color: #ffffff; }
-        body.theme-full-love .container { box-shadow: 0 10px 40px rgba(255, 0, 60, 0.3); border: 2px solid #ff003c; }
+        body.theme-full-love .container { box-shadow: 0 10px 40px rgba(255, 0, 60, 0.3); }
         body.theme-full-love .heart-icon, body.theme-full-love .counter-big { animation: heartbeat 0.8s infinite !important; }
 
         /* Theme 6: Focus & Study Mode (No Hearts) */
@@ -104,15 +104,47 @@
         body.theme-study .counter-big, body.theme-study .heart-icon { animation: none !important; }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.2s, color 0.2s; }
-        body { background-color: var(--bg-body); display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        
+        /* Layout configuration base setup */
+        body { 
+            background-color: var(--bg-container); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            height: 100dvh; 
+            overflow: hidden; 
+        }
         
         .hidden { display: none !important; }
 
-        /* App Container */
-        .container { background: var(--bg-container); width: 420px; height: 680px; border-radius: 24px; box-shadow: 0 10px 30px rgba(255,71,87,0.15); display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        /* Responsive Mobile First Container Architecture */
+        .container { 
+            background: var(--bg-container); 
+            width: 100vw; 
+            height: 100vh; 
+            height: 100dvh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            position: relative; 
+        }
+
+        /* Desktop Breakpoint Override to maintain visual layout testing constraints */
+        @media (min-width: 480px) {
+            body { background-color: var(--bg-body); }
+            .container { 
+                width: 420px; 
+                height: 680px; 
+                max-height: 92vh;
+                border-radius: 24px; 
+                box-shadow: 0 10px 30px rgba(255,71,87,0.15); 
+            }
+            body.theme-full-love .container { border: 2px solid #ff003c; }
+        }
 
         /* Login Interface */
-        .login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; padding: 40px; text-align: center; }
+        .login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; padding: 30px; text-align: center; overflow-y: auto; }
         .login-screen .heart-icon { font-size: 50px; color: var(--primary); animation: heartbeat 1.4s infinite; margin-bottom: 15px; }
         @keyframes heartbeat {
             0% { transform: scale(1); }
@@ -124,58 +156,58 @@
         }
         .login-screen h2 { margin-bottom: 8px; color: var(--text-main); font-size: 24px; }
         .login-screen p { font-size: 14px; color: var(--text-sub); margin-bottom: 25px; }
-        .login-screen input { width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid var(--border-color); background: var(--bg-container); color: var(--text-main); border-radius: 12px; font-size: 16px; outline: none; text-align: center; font-weight: bold; text-transform: uppercase; }
-        .login-screen button { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 16px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .login-screen input { width: 100%; max-width: 320px; padding: 14px; margin-bottom: 15px; border: 1px solid var(--border-color); background: var(--bg-container); color: var(--text-main); border-radius: 12px; font-size: 16px; outline: none; text-align: center; font-weight: bold; text-transform: uppercase; }
+        .login-screen button { width: 100%; max-width: 320px; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 16px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .login-screen button:hover { background: var(--primary-hover); }
         .error-msg { color: #e74c3c; margin-top: 10px; font-size: 14px; font-weight: 500; min-height: 20px; }
 
         /* Main App Screen Layout */
-        .app-screen { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
-        .chat-header { background: var(--primary); color: white; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 10px rgba(0,0,0,0.1); z-index: 10; }
-        .header-info { display: flex; align-items: center; gap: 10px; }
-        .couple-avatar { font-size: 22px; background: rgba(255,255,255,0.2); width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; border-radius: 50%; overflow: hidden; }
-        .header-text-block { display: flex; flex-direction: column; }
-        .header-text-block .title { font-weight: bold; font-size: 15px; letter-spacing: 0.5px; }
+        .app-screen { display: flex; flex-direction: column; height: 100%; width: 100%; overflow: hidden; }
+        .chat-header { background: var(--primary); color: white; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 10px rgba(0,0,0,0.1); z-index: 10; flex-shrink: 0; }
+        .header-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
+        .couple-avatar { font-size: 22px; background: rgba(255,255,255,0.2); width: 38px; height: 38px; display: flex; justify-content: center; align-items: center; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+        .header-text-block { display: flex; flex-direction: column; min-width: 0; }
+        .header-text-block .title { font-weight: bold; font-size: 14px; letter-spacing: 0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .header-text-block .subtitle { font-size: 11px; opacity: 0.9; }
         
-        .header-actions { display: flex; align-items: center; gap: 6px; }
-        .theme-select { background: rgba(255,255,255,0.2); color: white; border: none; padding: 5px 6px; border-radius: 6px; font-size: 11px; font-weight: 600; outline: none; cursor: pointer; max-width: 100px; }
+        .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .theme-select { background: rgba(255,255,255,0.2); color: white; border: none; padding: 6px; border-radius: 6px; font-size: 11px; font-weight: 600; outline: none; cursor: pointer; max-width: 95px; }
         .theme-select option { color: #2f3542; background: #fff; }
-        .logout-btn { background: rgba(255,255,255,0.15); border: none; padding: 5px 8px; color: white; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; }
-        .logout-btn:hover { background: rgba(255,255,255,0.3); }
+        .logout-btn { background: rgba(255,255,255,0.15); border: none; padding: 6px 8px; color: white; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; }
 
         /* Navigation Viewports */
-        .view-viewport { flex: 1; overflow-y: auto; background: var(--bg-chat); padding: 15px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 20px; }
+        .view-viewport { flex: 1; overflow-y: auto; background: var(--bg-chat); padding: 12px; display: flex; flex-direction: column; gap: 12px; min-height: 0; -webkit-overflow-scrolling: touch; }
+        .tab-view-panel { display: flex; flex-direction: column; gap: 12px; }
         
         /* Bottom Navbar Navigation */
-        .bottom-nav { height: 60px; background: #ffffff; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 10; }
+        .bottom-nav { height: 60px; background: #ffffff; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 10; flex-shrink: 0; padding-bottom: max(0px, env(safe-area-inset-bottom)); height: calc(60px + max(0px, env(safe-area-inset-bottom))); }
         .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--text-sub); cursor: pointer; flex: 1; height: 100%; gap: 3px; }
         .nav-item.active { color: var(--primary); }
         .nav-item .nav-icon { font-size: 20px; }
 
-        /* Card and Framework Components */
-        .card { background: var(--bg-container); border-radius: 16px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 12px; border: 1px solid var(--border-color); }
-        .card-title { font-size: 15px; font-weight: bold; color: var(--text-main); display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+        /* Card Component layouts */
+        .card { background: var(--bg-container); border-radius: 14px; padding: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--border-color); }
+        .card-title { font-size: 14px; font-weight: bold; color: var(--text-main); display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
         
         /* Utilities styling grid */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn-small { background: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 4px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .btn-small { background: var(--primary); color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 4px; }
         .btn-small:hover { background: var(--primary-hover); }
         .btn-secondary { background: var(--border-color); color: var(--text-main); }
-        input[type="text"], input[type="password"], input[type="date"], select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 13px; outline: none; background: var(--bg-container); color: var(--text-main); }
+        input[type="text"], input[type="password"], input[type="date"], select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 13px; outline: none; background: var(--bg-container); color: var(--text-main); -webkit-appearance: none; }
 
         /* Feature Module: Love Counter & Status */
-        .counter-big { font-size: 32px; font-weight: 900; color: var(--primary); text-align: center; margin: 5px 0; animation: heartbeat 2s infinite; }
-        .counter-sub { font-size: 12px; color: var(--text-sub); text-align: center; margin-top: -5px; font-weight: 500; }
+        .counter-big { font-size: 32px; font-weight: 900; color: var(--primary); text-align: center; margin: 4px 0; animation: heartbeat 2s infinite; }
+        .counter-sub { font-size: 12px; color: var(--text-sub); text-align: center; margin-top: -4px; font-weight: 500; }
         
-        .mood-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }
-        .mood-btn { padding: 8px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-container); cursor: pointer; font-size: 13px; display: flex; flex-direction: column; gap: 4px; align-items: center; }
+        .mood-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; text-align: center; }
+        .mood-btn { padding: 8px 4px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-container); cursor: pointer; font-size: 12px; display: flex; flex-direction: column; gap: 4px; align-items: center; }
         .mood-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .status-badge { font-size: 11px; padding: 2px 6px; border-radius: 20px; background: rgba(255,255,255,0.3); font-weight: bold; margin-top: 2px; display: inline-block; }
+        .status-badge { font-size: 10px; padding: 2px 6px; border-radius: 20px; background: rgba(255,255,255,0.3); font-weight: bold; margin-top: 2px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
 
         /* Feature Module: Chat Feed Enhancements */
-        .messages-box { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-        .msg { max-width: 75%; padding: 10px 14px; border-radius: 16px; font-size: 14px; line-height: 1.4; position: relative; word-break: break-word; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; flex-direction: column; cursor: pointer; }
+        .messages-box { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; min-height: 0; padding-bottom: 5px; }
+        .msg { max-width: 80%; padding: 10px 12px; border-radius: 16px; font-size: 14px; line-height: 1.4; position: relative; word-break: break-word; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; flex-direction: column; cursor: pointer; }
         .msg.me { align-self: flex-end; background: var(--bg-msg-me); color: var(--text-main); border-top-right-radius: 4px; }
         .msg.them { align-self: flex-start; background: var(--bg-msg-them); color: var(--text-main); border-top-left-radius: 4px; border: 1px solid var(--border-color); }
         
@@ -186,25 +218,25 @@
         .msg-status.read { color: #34b7f1; }
 
         /* Feature Module: Message Actions System Modal */
-        .msg-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 150; display: flex; justify-content: center; align-items: center; }
-        .msg-modal-content { background: var(--bg-container); padding: 20px; border-radius: 20px; width: 80%; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; border: 1px solid var(--border-color); }
+        .msg-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 150; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .msg-modal-content { background: var(--bg-container); padding: 20px; border-radius: 20px; width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; border: 1px solid var(--border-color); }
         .msg-modal-content h3 { font-size: 16px; margin-bottom: 5px; color: var(--text-main); }
         .modal-action-btn { width: 100%; padding: 12px; font-size: 14px; font-weight: bold; border-radius: 12px; border: none; cursor: pointer; text-align: center; }
         .modal-action-btn.danger { background: #ff4757; color: white; }
         .modal-action-btn.danger:hover { background: #ff6b81; }
         .modal-action-btn.secondary { background: var(--border-color); color: var(--text-main); }
 
-        /* Chat Input Controls & Tools Panel */
-        .chat-controls-wrapper { display: flex; flex-direction: column; background: #fdfdfd; border-top: 1px solid var(--border-color); }
+        /* Chat Input Controls & Tools Panel Layout Fixes */
+        .chat-controls-wrapper { display: flex; flex-direction: column; background: #fdfdfd; border-top: 1px solid var(--border-color); flex-shrink: 0; }
         .emoji-bar { display: flex; justify-content: space-around; padding: 6px; background: var(--bg-chat); border-bottom: 1px solid var(--border-color); }
-        .emoji-btn { font-size: 18px; cursor: pointer; background: none; border: none; }
-        .input-box { display: flex; padding: 10px 14px; align-items: center; gap: 8px; }
-        .input-box input { flex: 1; padding: 10px 16px; border: 1px solid var(--border-color); border-radius: 24px; outline: none; font-size: 14px; background: #f8f9fa; color: var(--text-main); }
-        .circle-control-btn { background: var(--primary); color: white; border: none; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 15px; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .emoji-btn { font-size: 18px; cursor: pointer; background: none; border: none; padding: 2px 6px; }
+        .input-box { display: flex; padding: 8px 10px; align-items: center; gap: 6px; background: var(--bg-container); }
+        .input-box input { flex: 1; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 24px; outline: none; font-size: 14px; background: #f8f9fa; color: var(--text-main); min-width: 0; }
+        .circle-control-btn { background: var(--primary); color: white; border: none; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 15px; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1); flex-shrink: 0; }
 
         /* Custom Type Dropdown Styling */
-        .msg-type-dropdown { width: auto !important; max-width: 120px; padding: 8px 10px !important; border-radius: 20px !important; font-size: 12px !important; background: #f1f2f6 !important; border: 1px solid var(--border-color) !important; cursor: pointer; font-weight: 600; }
-        .msg-badge { display: inline-block; font-size: 11px; font-weight: bold; padding: 2px 6px; border-radius: 6px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .msg-type-dropdown { width: auto !important; max-width: 90px; padding: 8px 6px !important; border-radius: 20px !important; font-size: 11px !important; background: #f1f2f6 !important; border: 1px solid var(--border-color) !important; cursor: pointer; font-weight: 600; text-overflow: ellipsis; flex-shrink: 0; }
+        .msg-badge { display: inline-block; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 6px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; width: fit-content; }
         .badge-link { background: #dfe4ea; color: #2f3542; border-left: 3px solid #3b82f6; }
         .badge-love { background: #ffeaa7; color: #d63031; border-left: 3px solid #ff4757; }
         .badge-sweet { background: #dff9fb; color: #130cb7; border-left: 3px solid #a29bfe; }
@@ -212,7 +244,7 @@
         /* Fullscreen Overlay Gift Alerts Trigger Animations */
         .gift-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; font-weight: bold; pointer-events: none; opacity: 0; transition: opacity 0.4s; }
         .gift-overlay.show { opacity: 1; pointer-events: auto; }
-        .gift-anim-box { font-size: 70px; animation: bouncePop 1.5s ease forward; }
+        .gift-anim-box { font-size: 70px; animation: bouncePop 1.5s ease forwards; }
         @keyframes bouncePop { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); } }
     </style>
 </head>
@@ -313,8 +345,8 @@
                 </div>
             </div>
 
-            <div id="viewChat" class="tab-view-panel display-block-node hidden" style="height:100%; display:flex; flex-direction:column;">
-                <div style="display: flex; justify-content: flex-end; padding-bottom: 5px;">
+            <div id="viewChat" class="tab-view-panel display-block-node hidden" style="flex: 1; display:flex; flex-direction:column; min-height: 0;">
+                <div style="display: flex; justify-content: flex-end; padding-bottom: 5px; flex-shrink: 0;">
                     <button id="clearChatBtn" class="btn-small btn-secondary" style="font-size: 11px; padding: 4px 8px; border-radius: 6px;">🧹 Clear Chat History</button>
                 </div>
                 <div id="messagesBox" class="messages-box"></div>
@@ -359,9 +391,9 @@
             <div class="input-box">
                 <select id="msgTypeSelector" class="msg-type-dropdown">
                     <option value="chat">💬 Chat</option>
-                    <option value="link">🔗 Link Suggestion</option>
-                    <option value="love">💖 Love Feel</option>
-                    <option value="sweet">✨ Appreciation</option>
+                    <option value="link">🔗 Link</option>
+                    <option value="love">💖 Love</option>
+                    <option value="sweet">✨ Apprec.</option>
                 </select>
                 <input type="text" id="messageInput" placeholder="Write something sweet...">
                 <button id="sendBtn" class="circle-control-btn">➤</button>
