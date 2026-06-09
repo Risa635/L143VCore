@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L143V Core 💖</title>
+    <style>
+        /* Multi-Theme Palette Core (Default: Sweet Rose) */
+        :root {
+            --primary: #ff4757;
+            --primary-hover: #ff6b81;
+            --bg-body: #ffeaf0;
+            --bg-container: #ffffff;
+            --bg-chat: #fff0f3;
+            --bg-msg-me: #ffccd5;
+            --bg-msg-them: #ffffff;
+            --text-main: #2f3542;
+            --text-sub: #747d8c;
+            --border-color: #ffe0e6;
+        }
+
+        /* Theme 2: Sunset Glow */
+        body.theme-sunset {
+            --primary: #ff7f50;
+            --primary-hover: #ff6348;
+            --bg-body: #fff2e6;
+            --bg-container: #ffffff;
+            --bg-chat: #fff5eb;
+            --bg-msg-me: #ffe0cc;
+            --bg-msg-them: #ffffff;
+            --text-main: #2f3542;
+            --text-sub: #747d8c;
+            --border-color: #ffd8cc;
+        }
+
+        /* Theme 3: Lavender Dream */
+        body.theme-lavender {
+            --primary: #a29bfe;
+            --primary-hover: #6c5ce7;
+            --bg-body: #f3f0ff;
+            --bg-container: #ffffff;
+            --bg-chat: #f8f5ff;
+            --bg-msg-me: #e0d4ff;
+            --bg-msg-them: #ffffff;
+            --text-main: #2d3436;
+            --text-sub: #636e72;
+            --border-color: #e8e0ff;
+        }
+
+        /* Theme 4: Midnight Sky (Dark Mode) */
+        body.theme-midnight {
+            --primary: #ff6b81;
+            --primary-hover: #ff4757;
+            --bg-body: #1e272e;
+            --bg-container: #2f3542;
+            --bg-chat: #1c2227;
+            --bg-msg-me: #ff4757;
+            --bg-msg-them: #57606f;
+            --text-main: #ffffff;
+            --text-sub: #a4b0be;
+            --border-color: #485460;
+        }
+
+        body.theme-midnight .msg.me { color: #ffffff; }
+        body.theme-midnight .msg.them { color: #ffffff; }
+        body.theme-midnight .msg .msg-time { color: rgba(255, 255, 255, 0.6); }
+        body.theme-midnight .input-box { background: #2f3542; border-top: 1px solid #485460; }
+        body.theme-midnight .input-box input { background: #57606f; color: #fff; border: 1px solid #485460; }
+        body.theme-midnight .bottom-nav { background: #2f3542; border-top: 1px solid #485460; }
+        body.theme-midnight .nav-item { color: #a4b0be; }
+        body.theme-midnight .card, body.theme-midnight .modal-content { background: #1c2227; border: 1px solid #485460; color: #fff; }
+        body.theme-midnight input, body.theme-midnight select, body.theme-midnight textarea { background: #57606f; color: #fff; border: 1px solid #485460; }
+
+        /* Theme 5: Full Love Mode */
+        body.theme-full-love {
+            --primary: #ff003c;
+            --primary-hover: #d60032;
+            --bg-body: #ffb3c1;
+            --bg-container: #fff0f3;
+            --bg-chat: #ffe0e6;
+            --bg-msg-me: #ff003c;
+            --bg-msg-them: #ffffff;
+            --text-main: #590d22;
+            --text-sub: #800f2f;
+            --border-color: #ff99ac;
+        }
+        body.theme-full-love .msg.me { color: #ffffff; }
+        body.theme-full-love .container { box-shadow: 0 10px 40px rgba(255, 0, 60, 0.3); border: 2px solid #ff003c; }
+        body.theme-full-love .heart-icon, body.theme-full-love .counter-big { animation: heartbeat 0.8s infinite !important; }
+
+        /* Theme 6: Focus & Study Mode (No Hearts) */
+        body.theme-study {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --bg-body: #e2e8f0;
+            --bg-container: #ffffff;
+            --bg-chat: #f8fafc;
+            --bg-msg-me: #dbeafe;
+            --bg-msg-them: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+            --border-color: #cbd5e1;
+        }
+        body.theme-study .counter-big, body.theme-study .heart-icon { animation: none !important; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.2s, color 0.2s; }
+        body { background-color: var(--bg-body); display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        
+        .hidden { display: none !important; }
+
+        /* App Container */
+        .container { background: var(--bg-container); width: 420px; height: 680px; border-radius: 24px; box-shadow: 0 10px 30px rgba(255,71,87,0.15); display: flex; flex-direction: column; overflow: hidden; position: relative; }
+
+        /* Login Interface */
+        .login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; padding: 40px; text-align: center; }
+        .login-screen .heart-icon { font-size: 50px; color: var(--primary); animation: heartbeat 1.4s infinite; margin-bottom: 15px; }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            20% { transform: scale(1.1); }
+            40% { transform: scale(1.05); }
+            60% { transform: scale(1.15); }
+            80% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+        .login-screen h2 { margin-bottom: 8px; color: var(--text-main); font-size: 24px; }
+        .login-screen p { font-size: 14px; color: var(--text-sub); margin-bottom: 25px; }
+        .login-screen input { width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid var(--border-color); background: var(--bg-container); color: var(--text-main); border-radius: 12px; font-size: 16px; outline: none; text-align: center; font-weight: bold; text-transform: uppercase; }
+        .login-screen button { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 16px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .login-screen button:hover { background: var(--primary-hover); }
+        .error-msg { color: #e74c3c; margin-top: 10px; font-size: 14px; font-weight: 500; min-height: 20px; }
+
+        /* Main App Screen Layout */
+        .app-screen { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+        .chat-header { background: var(--primary); color: white; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 10px rgba(0,0,0,0.1); z-index: 10; }
+        .header-info { display: flex; align-items: center; gap: 10px; }
+        .couple-avatar { font-size: 22px; background: rgba(255,255,255,0.2); width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; border-radius: 50%; overflow: hidden; }
+        .header-text-block { display: flex; flex-direction: column; }
+        .header-text-block .title { font-weight: bold; font-size: 15px; letter-spacing: 0.5px; }
+        .header-text-block .subtitle { font-size: 11px; opacity: 0.9; }
+        
+        .header-actions { display: flex; align-items: center; gap: 6px; }
+        .theme-select { background: rgba(255,255,255,0.2); color: white; border: none; padding: 5px 6px; border-radius: 6px; font-size: 11px; font-weight: 600; outline: none; cursor: pointer; max-width: 100px; }
+        .theme-select option { color: #2f3542; background: #fff; }
+        .logout-btn { background: rgba(255,255,255,0.15); border: none; padding: 5px 8px; color: white; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; }
+        .logout-btn:hover { background: rgba(255,255,255,0.3); }
+
+        /* Navigation Viewports */
+        .view-viewport { flex: 1; overflow-y: auto; background: var(--bg-chat); padding: 15px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 20px; }
+        
+        /* Bottom Navbar Navigation */
+        .bottom-nav { height: 60px; background: #ffffff; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 10; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--text-sub); cursor: pointer; flex: 1; height: 100%; gap: 3px; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item .nav-icon { font-size: 20px; }
+
+        /* Card and Framework Components */
+        .card { background: var(--bg-container); border-radius: 16px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 12px; border: 1px solid var(--border-color); }
+        .card-title { font-size: 15px; font-weight: bold; color: var(--text-main); display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+        
+        /* Utilities styling grid */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn-small { background: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 4px; }
+        .btn-small:hover { background: var(--primary-hover); }
+        .btn-secondary { background: var(--border-color); color: var(--text-main); }
+        input[type="text"], input[type="password"], input[type="date"], select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 13px; outline: none; background: var(--bg-container); color: var(--text-main); }
+
+        /* Feature Module: Love Counter & Status */
+        .counter-big { font-size: 32px; font-weight: 900; color: var(--primary); text-align: center; margin: 5px 0; animation: heartbeat 2s infinite; }
+        .counter-sub { font-size: 12px; color: var(--text-sub); text-align: center; margin-top: -5px; font-weight: 500; }
+        
+        .mood-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }
+        .mood-btn { padding: 8px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-container); cursor: pointer; font-size: 13px; display: flex; flex-direction: column; gap: 4px; align-items: center; }
+        .mood-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .status-badge { font-size: 11px; padding: 2px 6px; border-radius: 20px; background: rgba(255,255,255,0.3); font-weight: bold; margin-top: 2px; display: inline-block; }
+
+        /* Feature Module: Chat Feed Enhancements */
+        .messages-box { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        .msg { max-width: 75%; padding: 10px 14px; border-radius: 16px; font-size: 14px; line-height: 1.4; position: relative; word-break: break-word; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; flex-direction: column; cursor: pointer; }
+        .msg.me { align-self: flex-end; background: var(--bg-msg-me); color: var(--text-main); border-top-right-radius: 4px; }
+        .msg.them { align-self: flex-start; background: var(--bg-msg-them); color: var(--text-main); border-top-left-radius: 4px; border: 1px solid var(--border-color); }
+        
+        /* Chat Ticks Meta Mechanics */
+        .msg-meta-wrapper { display: flex; align-items: center; justify-content: flex-end; gap: 4px; margin-top: 3px; align-self: flex-end; font-size: 9px; }
+        .msg .msg-time { color: #888; font-weight: 500; }
+        .msg-status { font-size: 11px; color: #888; font-weight: bold; line-height: 1; }
+        .msg-status.read { color: #34b7f1; }
+
+        /* Feature Module: Message Actions System Modal */
+        .msg-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 150; display: flex; justify-content: center; align-items: center; }
+        .msg-modal-content { background: var(--bg-container); padding: 20px; border-radius: 20px; width: 80%; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; border: 1px solid var(--border-color); }
+        .msg-modal-content h3 { font-size: 16px; margin-bottom: 5px; color: var(--text-main); }
+        .modal-action-btn { width: 100%; padding: 12px; font-size: 14px; font-weight: bold; border-radius: 12px; border: none; cursor: pointer; text-align: center; }
+        .modal-action-btn.danger { background: #ff4757; color: white; }
+        .modal-action-btn.danger:hover { background: #ff6b81; }
+        .modal-action-btn.secondary { background: var(--border-color); color: var(--text-main); }
+
+        /* Chat Input Controls & Tools Panel */
+        .chat-controls-wrapper { display: flex; flex-direction: column; background: #fdfdfd; border-top: 1px solid var(--border-color); }
+        .emoji-bar { display: flex; justify-content: space-around; padding: 6px; background: var(--bg-chat); border-bottom: 1px solid var(--border-color); }
+        .emoji-btn { font-size: 18px; cursor: pointer; background: none; border: none; }
+        .input-box { display: flex; padding: 10px 14px; align-items: center; gap: 8px; }
+        .input-box input { flex: 1; padding: 10px 16px; border: 1px solid var(--border-color); border-radius: 24px; outline: none; font-size: 14px; background: #f8f9fa; color: var(--text-main); }
+        .circle-control-btn { background: var(--primary); color: white; border: none; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 15px; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+
+        /* Custom Type Dropdown Styling */
+        .msg-type-dropdown { width: auto !important; max-width: 120px; padding: 8px 10px !important; border-radius: 20px !important; font-size: 12px !important; background: #f1f2f6 !important; border: 1px solid var(--border-color) !important; cursor: pointer; font-weight: 600; }
+        .msg-badge { display: inline-block; font-size: 11px; font-weight: bold; padding: 2px 6px; border-radius: 6px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-link { background: #dfe4ea; color: #2f3542; border-left: 3px solid #3b82f6; }
+        .badge-love { background: #ffeaa7; color: #d63031; border-left: 3px solid #ff4757; }
+        .badge-sweet { background: #dff9fb; color: #130cb7; border-left: 3px solid #a29bfe; }
+        
+        /* Fullscreen Overlay Gift Alerts Trigger Animations */
+        .gift-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; font-weight: bold; pointer-events: none; opacity: 0; transition: opacity 0.4s; }
+        .gift-overlay.show { opacity: 1; pointer-events: auto; }
+        .gift-anim-box { font-size: 70px; animation: bouncePop 1.5s ease forward; }
+        @keyframes bouncePop { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="giftOverlay" class="gift-overlay">
+        <div id="giftAnimAsset" class="gift-anim-box">🎁</div>
+        <h2 id="giftAnimText" style="margin-top:15px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">A Sweet Surprise!</h2>
+    </div>
+
+    <div id="msgActionModal" class="msg-modal hidden">
+        <div class="msg-modal-content">
+            <h3>Message Options</h3>
+            <button id="deleteForMeBtn" class="modal-action-btn danger">Delete for me</button>
+            <button id="deleteForEveryoneBtn" class="modal-action-btn danger hidden">Delete for everyone</button>
+            <button id="cancelMsgModalBtn" class="modal-action-btn secondary">Cancel</button>
+        </div>
+    </div>
+
+    <div id="loginScreen" class="login-screen">
+        <div class="heart-icon" id="loginHeartIcon">💝</div>
+        <h2>L143V Core</h2>
+        <p>A secure link dedicated for us two</p>
+        <input type="text" id="usernameInput" placeholder="Enter AB or BA" autocomplete="off" maxlength="2">
+        <input type="password" id="passwordInput" placeholder="Enter Password" style="display:none; text-transform:none;" autocomplete="off">
+        <button id="loginBtn">Enter Nest</button>
+        <div id="errorMsg" class="error-msg"></div>
+    </div>
+
+    <div id="appScreen" class="app-screen hidden">
+        <div class="chat-header">
+            <div class="header-info">
+                <div class="couple-avatar" id="headerAvatarBox">💖</div>
+                <div class="header-text-block">
+                    <span class="title" id="chattingWithDisplay">L143V Core</span>
+                    <span id="partnerStatusDisplay" class="status-badge">Syncing Status...</span>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <select id="themeSelector" class="theme-select">
+                    <option value="rose">🌹 Sweet Rose</option>
+                    <option value="sunset">🌅 Sunset Glow</option>
+                    <option value="lavender">🔮 Lavender Dream</option>
+                    <option value="midnight">🌃 Midnight Sky</option>
+                    <option value="full-love">💘 Full Love Mode</option>
+                    <option value="study">📚 Focus & Study</option>
+                </select>
+                <button id="logoutBtn" class="logout-btn">Leave</button>
+            </div>
+        </div>
+        
+        <div id="viewViewport" class="view-viewport">
+            
+            <div id="viewHome" class="tab-view-panel display-block-node">
+                <div class="card">
+                    <div class="card-title" id="loveCounterCardTitle">❤️ Our Love Counter</div>
+                    <div class="counter-big" id="daysTogetherDisplay">000</div>
+                    <div class="counter-sub" id="counterSubText">Days Together Counter</div>
+                    <div style="font-size:12px; margin-top:4px; display:flex; flex-direction:column; gap:4px; border-top:1px dashed var(--border-color); padding-top:6px;">
+                        <span id="anniversaryCountdownDisplay">⏳ Calculating next milestone...</span>
+                        <span id="specialDateReminderDisplay">📅 Next Date: None scheduled</span>
+                    </div>
+                    <input type="date" id="anniversaryDatePicker" style="margin-top: 5px; font-size:11px; padding:6px;" title="Set Anniversary Date">
+                </div>
+
+                <div class="card">
+                    <div class="card-title">💕 Update Your Current Mood</div>
+                    <div class="mood-grid">
+                        <button class="mood-btn" data-mood="Happy 😊"><span>😊</span><span style="font-size:10px;">Happy</span></button>
+                        <button class="mood-btn" data-mood="Busy 📚"><span>📚</span><span style="font-size:10px;">Busy</span></button>
+                        <button class="mood-btn" data-mood="Sleeping 😴"><span>😴</span><span style="font-size:10px;">Sleep</span></button>
+                        <button class="mood-btn" data-mood="Available 💖"><span>💖</span><span style="font-size:10px;">Ready</span></button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🌎 Shared Live Geolocation</div>
+                    <div style="font-size: 12px; color: var(--text-main); display:flex; flex-direction:column; gap:6px;">
+                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                            <input type="checkbox" id="locationShareToggle"> Stream My Live Coordinates
+                        </label>
+                        <div id="partnerLocationBox" style="background:var(--bg-chat); padding:8px; border-radius:8px; font-weight:500; margin-top:4px;">
+                            Partner Location Unknown
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🎁 Virtual Gift Dispatcher</div>
+                    <div class="grid-2">
+                        <button class="btn-small" onclick="triggerGiftDelivery('🌹', 'Virtual Flower')">🌹 Send Flowers</button>
+                        <button class="btn-small" onclick="triggerGiftDelivery('🍫', 'Box of Chocolates')">🍫 Send Sweets</button>
+                        <button class="btn-small" onclick="triggerGiftDelivery('🎈', 'Heart Balloon')">🎈 Send Balloon</button>
+                        <button class="btn-small" onclick="triggerGiftDelivery('✨', 'Magic Pixie Dust')">✨ Send Magic</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="viewChat" class="tab-view-panel display-block-node hidden" style="height:100%; display:flex; flex-direction:column;">
+                <div style="display: flex; justify-content: flex-end; padding-bottom: 5px;">
+                    <button id="clearChatBtn" class="btn-small btn-secondary" style="font-size: 11px; padding: 4px 8px; border-radius: 6px;">🧹 Clear Chat History</button>
+                </div>
+                <div id="messagesBox" class="messages-box"></div>
+            </div>
+            
+            <div id="viewProfile" class="tab-view-panel display-block-node hidden">
+                <div class="card">
+                    <div class="card-title">👤 Edit Your Profile</div>
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:10px;">
+                        <img id="profilePicPreview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><rect width='80' height='80' fill='%23ffccd5'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='30'>💖</text></svg>" style="width:80px; height:80px; border-radius:50%; object-fit:cover; border: 3px solid var(--primary);">
+                        <input type="file" id="profilePicInput" accept="image/*" style="font-size:11px; width:100%;">
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
+                        <div>
+                            <label style="font-size:11px; font-weight:bold; color:var(--text-sub);">Display Name</label>
+                            <input type="text" id="profileNameInput" placeholder="Your beautiful name...">
+                        </div>
+                        <div>
+                            <label style="font-size:11px; font-weight:bold; color:var(--text-sub);">Protect Your Profile (Password)</label>
+                            <input type="password" id="profilePasswordInput" placeholder="Leave blank to keep unchanged">
+                        </div>
+                        <div>
+                            <label style="font-size:11px; font-weight:bold; color:var(--text-sub);">About Me</label>
+                            <textarea id="profileAboutInput" placeholder="Write a little something about yourself..." rows="3" style="resize:none; font-family:inherit;"></textarea>
+                        </div>
+                        <button class="btn-small" id="saveProfileBtn" style="margin-top:5px; padding:12px;">Save Profile Changes</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="stickyChatInputController" class="chat-controls-wrapper hidden">
+            <div class="emoji-bar">
+                <button class="emoji-btn" onclick="injectQuickEmoji('❤️')">❤️</button>
+                <button class="emoji-btn" onclick="injectQuickEmoji('😍')">😍</button>
+                <button class="emoji-btn" onclick="injectQuickEmoji('😘')">😘</button>
+                <button class="emoji-btn" onclick="injectQuickEmoji('😂')">😂</button>
+                <button class="emoji-btn" onclick="injectQuickEmoji('😭')">😭</button>
+                <button class="emoji-btn" onclick="injectQuickEmoji('👍')">👍</button>
+            </div>
+            <div class="input-box">
+                <select id="msgTypeSelector" class="msg-type-dropdown">
+                    <option value="chat">💬 Chat</option>
+                    <option value="link">🔗 Link Suggestion</option>
+                    <option value="love">💖 Love Feel</option>
+                    <option value="sweet">✨ Appreciation</option>
+                </select>
+                <input type="text" id="messageInput" placeholder="Write something sweet...">
+                <button id="sendBtn" class="circle-control-btn">➤</button>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="nav-item active" data-target="viewHome" onclick="switchNavTab(this)">
+                <span class="nav-icon">🏠</span><span>Us</span>
+            </div>
+            <div class="nav-item" data-target="viewChat" onclick="switchNavTab(this)">
+                <span class="nav-icon">💬</span><span>Chat</span>
+            </div>
+            <div class="nav-item" data-target="viewProfile" onclick="switchNavTab(this)">
+                <span class="nav-icon">👤</span><span>Profile</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, doc, setDoc, getDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+    // Verified Direct Firebase Configuration Linked Data
+    const firebaseConfig = {
+        apiKey: "AIzaSyBlYJQZ1g6pXYkYWj-fbksuORtrXN35anI",
+        authDomain: "lithesh-9aa48.firebaseapp.com",
+        projectId: "lithesh-9aa48",
+        storageBucket: "lithesh-9aa48.firebasestorage.app",
+        messagingSenderId: "64335527807",
+        appId: "1:64335527807:web:fd60b53b23163cf0ffe44a",
+        measurementId: "G-5NRWYBG2VP"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    // Global Operational Context Elements
+    let currentUser = localStorage.getItem('chatUser') || null;
+    let currentPartnerName = null;
+    let currentUserName = null;
+    let activeUnsubscribeStreams = [];
+    let locationWatchId = null;
+
+    // Track targets for active deletion modals
+    let targetedDeletionMsgId = null;
+    let targetedDeletionMsgSender = null;
+
+    // Element Target Mappings Nodes
+    const loginScreen = document.getElementById('loginScreen');
+    const appScreen = document.getElementById('appScreen');
+    const usernameInput = document.getElementById('usernameInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const loginBtn = document.getElementById('loginBtn');
+    const errorMsg = document.getElementById('errorMsg');
+    const chattingWithDisplay = document.getElementById('chattingWithDisplay');
+    const partnerStatusDisplay = document.getElementById('partnerStatusDisplay');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const messagesBox = document.getElementById('messagesBox');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const themeSelector = document.getElementById('themeSelector');
+    const stickyChatInputController = document.getElementById('stickyChatInputController');
+    const msgTypeSelector = document.getElementById('msgTypeSelector');
+
+    // Theme Management Block
+    const savedTheme = localStorage.getItem('coupleTheme') || 'rose';
+    themeSelector.value = savedTheme;
+    applyThemeLayout(savedTheme);
+
+    themeSelector.addEventListener('change', (e) => {
+        const selection = e.target.value;
+        localStorage.setItem('coupleTheme', selection);
+        applyThemeLayout(selection);
+        updateChatHeader(); 
+    });
+
+    function applyThemeLayout(themeName) {
+        document.body.className = "";
+        if (themeName !== 'rose') document.body.classList.add(`theme-${themeName}`);
+
+        const loginIcon = document.getElementById('loginHeartIcon');
+        const loveCounterTitle = document.getElementById('loveCounterCardTitle');
+        const counterSub = document.getElementById('counterSubText');
+        
+        if (themeName === 'study') {
+            if (loginIcon) loginIcon.textContent = "📚";
+            if (loveCounterTitle) loveCounterTitle.textContent = "⏱️ Focus Accountability";
+            if (counterSub) counterSub.textContent = "Days Tracked Together";
+        } else {
+            if (loginIcon) loginIcon.textContent = "💝";
+            if (loveCounterTitle) loveCounterTitle.textContent = "❤️ Our Love Counter";
+            if (counterSub) counterSub.textContent = "Days Together Counter";
+        }
+    }
+
+    function updateChatHeader() {
+        const peerUser = (currentUser === 'AB') ? 'BA' : 'AB';
+        const displayUser = currentUserName || currentUser || "You";
+        const displayPeer = currentPartnerName || peerUser;
+        const currentTheme = document.getElementById('themeSelector').value;
+        const separator = currentTheme === 'study' ? '🤝' : '💖';
+        
+        chattingWithDisplay.textContent = `L143V Core ${separator} ${displayUser} & ${displayPeer}`;
+    }
+
+    // Navigation Subsystem Tab Control Logic
+    window.switchNavTab = function(element) {
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-view-panel').forEach(el => el.classList.add('hidden'));
+        
+        element.classList.add('active');
+        const activeTargetID = element.getAttribute('data-target');
+        document.getElementById(activeTargetID).classList.remove('hidden');
+
+        if (activeTargetID === 'viewChat') {
+            stickyChatInputController.classList.remove('hidden');
+            messagesBox.scrollTop = messagesBox.scrollHeight;
+            
+            // Instantly transition partner messages on page to Blue Ticks
+            document.querySelectorAll('.msg.them[data-unread-flag="true"]').forEach(node => {
+                const docId = node.getAttribute('data-msg-id');
+                setDoc(doc(db, "messages", docId), { status: 'read' }, { merge: true });
+            });
+        } else {
+            stickyChatInputController.classList.add('hidden');
+        }
+    };
+
+    // Global quick access wrappers
+    window.injectQuickEmoji = function(emoji) { messageInput.value += emoji; messageInput.focus(); };
+
+    // Gate Access Handling
+    loginBtn.addEventListener('click', processLogin);
+    usernameInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') processLogin(); });
+    passwordInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') processLogin(); });
+
+    if (currentUser) { openCoreApp(); }
+
+    async function processLogin() {
+        const inputName = usernameInput.value.trim().toUpperCase();
+        if (inputName === 'AB' || inputName === 'BA') {
+            loginBtn.textContent = "Checking...";
+            
+            try {
+                const docRef = doc(db, "profiles", inputName);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists() && docSnap.data().password) {
+                    if (passwordInput.style.display === 'none') {
+                        passwordInput.style.display = 'block';
+                        errorMsg.textContent = "Please enter your password to continue.";
+                        loginBtn.textContent = "Enter Nest";
+                        return;
+                    }
+                    if (passwordInput.value !== docSnap.data().password) {
+                        errorMsg.textContent = "Incorrect password. Try again.";
+                        loginBtn.textContent = "Enter Nest";
+                        return;
+                    }
+                }
+                
+                currentUser = inputName;
+                localStorage.setItem('chatUser', currentUser);
+                errorMsg.textContent = "";
+                usernameInput.value = "";
+                passwordInput.value = "";
+                passwordInput.style.display = "none";
+                loginBtn.textContent = "Enter Nest";
+                
+                openCoreApp();
+            } catch (err) {
+                console.error(err);
+                errorMsg.textContent = "Error authenticating. Check connection.";
+                loginBtn.textContent = "Enter Nest";
+            }
+        } else {
+            errorMsg.textContent = "Access denied. Only AB & BA can open this link.";
+            loginBtn.textContent = "Enter Nest";
+        }
+    }
+
+    logoutBtn.addEventListener('click', () => {
+        if (locationWatchId) navigator.geolocation.clearWatch(locationWatchId);
+        activeUnsubscribeStreams.forEach(unsub => unsub());
+        activeUnsubscribeStreams = [];
+        localStorage.removeItem('chatUser');
+        currentUser = null;
+        currentUserName = null;
+        currentPartnerName = null;
+        appScreen.classList.add('hidden');
+        loginScreen.classList.remove('hidden');
+    });
+
+    function openCoreApp() {
+        loginScreen.classList.add('hidden');
+        appScreen.classList.remove('hidden');
+        updateChatHeader();
+        initializeRealtimeSynchronizations();
+    }
+
+    // Comprehensive Pipeline Data Streams Layer Synchronization
+    function initializeRealtimeSynchronizations() {
+        const peerUser = (currentUser === 'AB') ? 'BA' : 'AB';
+
+        // Stream 0A: My Profile Sync Listener
+        const unsubMyProfile = onSnapshot(doc(db, "profiles", currentUser), (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                if (data.name) {
+                    document.getElementById('profileNameInput').value = data.name;
+                    currentUserName = data.name;
+                }
+                if (data.about) document.getElementById('profileAboutInput').value = data.about;
+                if (data.photoUrl) {
+                    document.getElementById('profilePicPreview').src = data.photoUrl;
+                }
+                updateChatHeader();
+            }
+        });
+        activeUnsubscribeStreams.push(unsubMyProfile);
+
+        // Stream 0B: Partner Profile Sync Listener
+        const unsubPartnerProfile = onSnapshot(doc(db, "profiles", peerUser), (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                if (data.name) currentPartnerName = data.name;
+                if (data.photoUrl) {
+                    document.getElementById('headerAvatarBox').innerHTML = `<img src="${data.photoUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+                }
+                updateChatHeader();
+            }
+        });
+        activeUnsubscribeStreams.push(unsubPartnerProfile);
+
+        // Stream 1: Chat Stream Loop Engine with WhatsApp Ticks & Custom Badges
+        const msgQuery = query(collection(db, "messages"), orderBy("timestamp", "asc"));
+        const unsubChat = onSnapshot(msgQuery, (snapshot) => {
+            messagesBox.innerHTML = "";
+            const isChatViewActive = !document.getElementById('viewChat').classList.contains('hidden');
+            const userChatClearedTimestamp = parseInt(localStorage.getItem(`chatClearedAt_${currentUser}`) || '0');
+
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const docId = docSnap.id;
+
+                if (data.timestamp <= userChatClearedTimestamp) return;
+                if (data.deletedFor && data.deletedFor.includes(currentUser)) return;
+
+                if (data.sender !== currentUser) {
+                    if (isChatViewActive && data.status !== 'read') {
+                        setDoc(doc(db, "messages", docId), { status: 'read' }, { merge: true });
+                    } else if (!isChatViewActive && (!data.status || data.status === 'sent')) {
+                        setDoc(doc(db, "messages", docId), { status: 'delivered' }, { merge: true });
+                    }
+                }
+
+                const msgElement = document.createElement('div');
+                const isMe = data.sender === currentUser;
+                msgElement.classList.add('msg', isMe ? 'me' : 'them');
+                
+                msgElement.setAttribute('data-msg-id', docId);
+                if (data.sender !== currentUser && data.status !== 'read') {
+                    msgElement.setAttribute('data-unread-flag', 'true');
+                }
+                
+                if (!data.deletedForAll) {
+                    msgElement.addEventListener('click', () => {
+                        openMessageDeletionWorkflow(docId, data.sender);
+                    });
+                }
+
+                const timeString = new Date(data.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                let ticksHtml = '';
+                if (isMe && !data.deletedForAll) {
+                    if (!data.status || data.status === 'sent') {
+                        ticksHtml = '<span class="msg-status">✓</span>';
+                    } else if (data.status === 'delivered') {
+                        ticksHtml = '<span class="msg-status">✓✓</span>';
+                    } else if (data.status === 'read') {
+                        ticksHtml = '<span class="msg-status read">✓✓</span>';
+                    }
+                }
+
+                // Append Category Badge Label structures to conversation cards
+                let badgeHtml = '';
+                if (data.msgType === 'link') {
+                    badgeHtml = `<span class="msg-badge badge-link">🔗 Link Suggestion</span>`;
+                } else if (data.msgType === 'love') {
+                    badgeHtml = `<span class="msg-badge badge-love">💖 Love Feel</span>`;
+                } else if (data.msgType === 'sweet') {
+                    badgeHtml = `<span class="msg-badge badge-sweet">✨ Appreciation</span>`;
+                }
+
+                if (data.deletedForAll) {
+                    msgElement.innerHTML = `<span class="msg-text" style="font-style: italic; opacity: 0.6;">🚫 This message was deleted</span><div class="msg-meta-wrapper"><span class="msg-time">${timeString}</span></div>`;
+                } else {
+                    msgElement.innerHTML = `${badgeHtml}<span class="msg-text">${sanitizeData(data.text)}</span><div class="msg-meta-wrapper"><span class="msg-time">${timeString}</span>${ticksHtml}</div>`;
+                }
+                messagesBox.appendChild(msgElement);
+            });
+            messagesBox.scrollTop = messagesBox.scrollHeight;
+        });
+        activeUnsubscribeStreams.push(unsubChat);
+
+        // Stream 2: Mood & System Presence Status Listener
+        const unsubPresence = onSnapshot(collection(db, "presence"), (snapshot) => {
+            snapshot.forEach(doc => {
+                if (doc.id === peerUser) {
+                    const data = doc.data();
+                    partnerStatusDisplay.textContent = `${data.mood || 'Available 💖'} | ${data.locationStatus || 'Offline'}`;
+                }
+            });
+        });
+        activeUnsubscribeStreams.push(unsubPresence);
+
+        // Stream 8: Global Configuration Counter Settings
+        const unsubConfig = onSnapshot(collection(db, "config"), (snapshot) => {
+            snapshot.forEach(doc => {
+                if (doc.id === "anniversary") {
+                    const dateVal = doc.data().date;
+                    document.getElementById('anniversaryDatePicker').value = dateVal;
+                    recalculateLoveMetricsTimeline(dateVal);
+                }
+            });
+        });
+        activeUnsubscribeStreams.push(unsubConfig);
+
+        // Stream 9: Gift System Event Overlay Hook Stream
+        const unsubGiftTrigger = onSnapshot(collection(db, "gifts"), (snapshot) => {
+            snapshot.forEach(doc => {
+                if (doc.id === "alert") {
+                    const data = doc.data();
+                    if (data.target === currentUser && data.timestamp > Date.now() - 10000) {
+                        fireGiftOverlayAnimation(data.asset, data.label);
+                    }
+                }
+            });
+        });
+        activeUnsubscribeStreams.push(unsubGiftTrigger);
+    }
+
+    // Message Interaction Modal Setup
+    function openMessageDeletionWorkflow(msgId, senderId) {
+        targetedDeletionMsgId = msgId;
+        targetedDeletionMsgSender = senderId;
+        
+        const deleteForEveryoneBtn = document.getElementById('deleteForEveryoneBtn');
+        if (senderId === currentUser) {
+            deleteForEveryoneBtn.classList.remove('hidden');
+        } else {
+            deleteForEveryoneBtn.classList.add('hidden');
+        }
+        document.getElementById('msgActionModal').classList.remove('hidden');
+    }
+
+    function closeMessageDeletionWorkflow() {
+        document.getElementById('msgActionModal').classList.add('hidden');
+        targetedDeletionMsgId = null;
+        targetedDeletionMsgSender = null;
+    }
+
+    document.getElementById('cancelMsgModalBtn').addEventListener('click', closeMessageDeletionWorkflow);
+
+    document.getElementById('deleteForMeBtn').addEventListener('click', async () => {
+        if (!targetedDeletionMsgId) return;
+        try {
+            const docRef = doc(db, "messages", targetedDeletionMsgId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const currentArr = docSnap.data().deletedFor || [];
+                if (!currentArr.includes(currentUser)) {
+                    currentArr.push(currentUser);
+                }
+                await setDoc(docRef, { deletedFor: currentArr }, { merge: true });
+            }
+        } catch(e) { console.error(e); }
+        closeMessageDeletionWorkflow();
+    });
+
+    document.getElementById('deleteForEveryoneBtn').addEventListener('click', async () => {
+        if (!targetedDeletionMsgId) return;
+        try {
+            await setDoc(doc(db, "messages", targetedDeletionMsgId), { deletedForAll: true }, { merge: true });
+        } catch(e) { console.error(e); }
+        closeMessageDeletionWorkflow();
+    });
+
+    // Clear Chat Functionality Execution
+    document.getElementById('clearChatBtn').addEventListener('click', () => {
+        if (confirm("Clear conversation log from your display pane? (This won't wipe your partner's log)")) {
+            localStorage.setItem(`chatClearedAt_${currentUser}`, Date.now().toString());
+            messagesBox.innerHTML = "";
+        }
+    });
+
+    // Profile Settings Execution Component
+    document.getElementById('saveProfileBtn').addEventListener('click', async () => {
+        const btn = document.getElementById('saveProfileBtn');
+        btn.textContent = "Saving to Server...";
+        
+        const name = document.getElementById('profileNameInput').value.trim();
+        const pass = document.getElementById('profilePasswordInput').value;
+        const about = document.getElementById('profileAboutInput').value.trim();
+        const fileInput = document.getElementById('profilePicInput');
+        
+        let photoUrl = document.getElementById('profilePicPreview').src;
+        
+        try {
+            if (fileInput.files[0]) {
+                const file = fileInput.files[0];
+                const storageRef = ref(storage, `profiles/${currentUser}_${Date.now()}`);
+                const snap = await uploadBytes(storageRef, file);
+                photoUrl = await getDownloadURL(snap.ref);
+            }
+            
+            const profileData = { name, about, photoUrl, lastUpdated: Date.now() };
+            if (pass) profileData.password = pass;
+            
+            await setDoc(doc(db, "profiles", currentUser), profileData, { merge: true });
+            
+            btn.textContent = "Changes Saved! ✔";
+            setTimeout(() => { btn.textContent = "Save Profile Changes"; }, 2500);
+            document.getElementById('profilePasswordInput').value = "";
+            
+        } catch (err) {
+            console.error(err);
+            btn.textContent = "Failed to Save!";
+            setTimeout(() => { btn.textContent = "Save Profile Changes"; }, 2500);
+        }
+    });
+
+    // Message Transmit Execution Core with Added Type Selector Data Payloads
+    sendBtn.addEventListener('click', transmitMessage);
+    messageInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') transmitMessage(); });
+
+    async function transmitMessage() {
+        const textValue = messageInput.value.trim();
+        const selectedType = msgTypeSelector.value;
+        if (!textValue) return;
+        try {
+            messageInput.value = "";
+            await addDoc(collection(db, "messages"), { 
+                text: textValue, 
+                sender: currentUser, 
+                timestamp: Date.now(),
+                status: 'sent',
+                msgType: selectedType
+            });
+            // Reset dropdown back to default basic chat layout
+            msgTypeSelector.value = "chat";
+        } catch (err) { console.error(err); }
+    }
+
+    // Feature Component Hook: Interactive Mood Module Toggles
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const targetMood = btn.getAttribute('data-mood');
+            await setDoc(doc(db, "presence", currentUser), { mood: targetMood }, { merge: true });
+        });
+    });
+
+    // Feature Component Hook: Live Geo-Location System Synchronization 
+    document.getElementById('locationShareToggle').addEventListener('change', (e) => {
+        if (e.target.checked) {
+            if (navigator.geolocation) {
+                locationWatchId = navigator.geolocation.watchPosition(async (pos) => {
+                    const locStr = `Lat: ${pos.coords.latitude.toFixed(4)}, Lng: ${pos.coords.longitude.toFixed(4)}`;
+                    await setDoc(doc(db, "presence", currentUser), { locationStatus: locStr }, { merge: true });
+                }, () => {}, { enableHighAccuracy: true });
+            }
+        } else {
+            if (locationWatchId) navigator.geolocation.clearWatch(locationWatchId);
+            setDoc(doc(db, "presence", currentUser), { locationStatus: "Offline" }, { merge: true });
+        }
+    });
+
+    // Feature Component Hook: Live Love Counter Timeline Logic Engine Calculations
+    document.getElementById('anniversaryDatePicker').addEventListener('change', async (e) => {
+        await setDoc(doc(db, "config", "anniversary"), { date: e.target.value });
+    });
+
+    function recalculateLoveMetricsTimeline(anniversaryDateString) {
+        if (!anniversaryDateString) return;
+        const startDay = new Date(anniversaryDateString);
+        const rightNow = new Date();
+        
+        const diffTime = Math.abs(rightNow - startDay);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        document.getElementById('daysTogetherDisplay').textContent = diffDays;
+
+        let nextAnniversary = new Date(rightNow.getFullYear(), startDay.getMonth(), startDay.getDate());
+        if (rightNow > nextAnniversary) {
+            nextAnniversary.setFullYear(rightNow.getFullYear() + 1);
+        }
+        const countdownTime = nextAnniversary - rightNow;
+        const countdownDays = Math.ceil(countdownTime / (1000 * 60 * 60 * 24));
+        document.getElementById('anniversaryCountdownDisplay').textContent = `⏳ ${countdownDays} days left until your next anniversary!`;
+    }
+
+    // Feature Component Hook: Gifts Animation Trigger Handler
+    window.triggerGiftDelivery = async function(asset, label) {
+        const peerUser = (currentUser === 'AB') ? 'BA' : 'AB';
+        await setDoc(doc(db, "gifts", "alert"), { asset, label, target: peerUser, timestamp: Date.now() });
+        alert(`Sent a ${label} to your partner!`);
+    };
+
+    function fireGiftOverlayAnimation(asset, label) {
+        const overlay = document.getElementById('giftOverlay');
+        document.getElementById('giftAnimAsset').textContent = asset;
+        document.getElementById('giftAnimText').textContent = `Received a ${label}!`;
+        
+        overlay.classList.add('show');
+        setTimeout(() => { overlay.classList.remove('show'); }, 4000);
+    }
+
+    function sanitizeData(str) {
+        return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+    }
+</script>
+</body>
+</html>
