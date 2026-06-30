@@ -1,924 +1,1085 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>L143V Core 💖</title>
-    <style>
-        /* Multi-Theme Palette Core (Default: Sweet Rose) */
-        :root {
-            --primary: #ff4757;
-            --primary-hover: #ff6b81;
-            --bg-body: #ffeaf0;
-            --bg-container: #ffffff;
-            --bg-chat: #fff0f3;
-            --bg-msg-me: #ffccd5;
-            --bg-msg-them: #ffffff;
-            --text-main: #2f3542;
-            --text-sub: #747d8c;
-            --border-color: #ffe0e6;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Alphabet Number Converter</title>
 
-        /* Theme 2: Sunset Glow */
-        body.theme-sunset {
-            --primary: #ff7f50;
-            --primary-hover: #ff6348;
-            --bg-body: #fff2e6;
-            --bg-container: #ffffff;
-            --bg-chat: #fff5eb;
-            --bg-msg-me: #ffe0cc;
-            --bg-msg-them: #ffffff;
-            --text-main: #2f3542;
-            --text-sub: #747d8c;
-            --border-color: #ffd8cc;
-        }
+<style>
+  /* ================= ROOT VARIABLES / THEME TOKENS ================= */
+  :root{
+    --bg1:#0f0c29;
+    --bg2:#302b63;
+    --bg3:#24243e;
+    --glass-bg: rgba(255,255,255,0.07);
+    --glass-border: rgba(255,255,255,0.18);
+    --text-main:#f5f5fa;
+    --text-sub:#b9b6cf;
+    --accent1:#7f5af0;
+    --accent2:#2cb1bc;
+    --accent3:#ff6ec4;
+    --danger:#ff5470;
+    --success:#2ce8a3;
+    --shadow: 0 8px 32px rgba(0,0,0,0.37);
+    --radius-lg:22px;
+    --radius-md:14px;
+    --radius-sm:8px;
+  }
 
-        /* Theme 3: Lavender Dream */
-        body.theme-lavender {
-            --primary: #a29bfe;
-            --primary-hover: #6c5ce7;
-            --bg-body: #f3f0ff;
-            --bg-container: #ffffff;
-            --bg-chat: #f8f5ff;
-            --bg-msg-me: #e0d4ff;
-            --bg-msg-them: #ffffff;
-            --text-main: #2d3436;
-            --text-sub: #636e72;
-            --border-color: #e8e0ff;
-        }
+  /* Light theme overrides */
+  body.light{
+    --bg1:#e0f7fa;
+    --bg2:#fce4ec;
+    --bg3:#f3e5f5;
+    --glass-bg: rgba(255,255,255,0.55);
+    --glass-border: rgba(255,255,255,0.7);
+    --text-main:#231d3a;
+    --text-sub:#5c5573;
+    --shadow: 0 8px 32px rgba(120,100,160,0.18);
+  }
 
-        /* Theme 4: Midnight Sky (Dark Mode) */
-        body.theme-midnight {
-            --primary: #ff6b81;
-            --primary-hover: #ff4757;
-            --bg-body: #1e272e;
-            --bg-container: #2f3542;
-            --bg-chat: #1c2227;
-            --bg-msg-me: #ff4757;
-            --bg-msg-them: #57606f;
-            --text-main: #ffffff;
-            --text-sub: #a4b0be;
-            --border-color: #485460;
-        }
+  *{ box-sizing:border-box; margin:0; padding:0; }
 
-        body.theme-midnight .msg.me { color: #ffffff; }
-        body.theme-midnight .msg.them { color: #ffffff; }
-        body.theme-midnight .msg .msg-time { color: rgba(255, 255, 255, 0.6); }
-        body.theme-midnight .input-box { background: #2f3542; border-top: 1px solid #485460; }
-        body.theme-midnight .input-box input { background: #57606f; color: #fff; border: 1px solid #485460; }
-        body.theme-midnight .bottom-nav { background: #2f3542; border-top: 1px solid #485460; }
-        body.theme-midnight .nav-item { color: #a4b0be; }
-        body.theme-midnight .card, body.theme-midnight .modal-content { background: #1c2227; border: 1px solid #485460; color: #fff; }
-        body.theme-midnight input, body.theme-midnight select, body.theme-midnight textarea { background: #57606f; color: #fff; border: 1px solid #485460; }
+  html,body{
+    height:100%;
+    font-family:'Segoe UI', system-ui, -apple-system, sans-serif;
+    color:var(--text-main);
+    overflow-x:hidden;
+  }
 
-        /* Theme 5: Full Love Mode */
-        body.theme-full-love {
-            --primary: #ff003c;
-            --primary-hover: #d60032;
-            --bg-body: #ffb3c1;
-            --bg-container: #fff0f3;
-            --bg-chat: #ffe0e6;
-            --bg-msg-me: #ff003c;
-            --bg-msg-them: #ffffff;
-            --text-main: #590d22;
-            --text-sub: #800f2f;
-            --border-color: #ff99ac;
-        }
-        body.theme-full-love .msg.me { color: #ffffff; }
-        body.theme-full-love .container { box-shadow: 0 10px 40px rgba(255, 0, 60, 0.3); }
-        body.theme-full-love .heart-icon, body.theme-full-love .counter-big { animation: heartbeat 0.8s infinite !important; }
+  /* ================= ANIMATED GRADIENT BACKGROUND ================= */
+  body{
+    background: linear-gradient(120deg, var(--bg1), var(--bg2), var(--bg3), var(--bg1));
+    background-size: 400% 400%;
+    animation: gradientShift 18s ease infinite;
+    min-height:100vh;
+    position:relative;
+    transition: color .4s ease;
+  }
+  @keyframes gradientShift{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
 
-        /* Theme 6: Focus & Study Mode (No Hearts) */
-        body.theme-study {
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --bg-body: #e2e8f0;
-            --bg-container: #ffffff;
-            --bg-chat: #f8fafc;
-            --bg-msg-me: #dbeafe;
-            --bg-msg-them: #ffffff;
-            --text-main: #0f172a;
-            --text-sub: #64748b;
-            --border-color: #cbd5e1;
-        }
-        body.theme-study .counter-big, body.theme-study .heart-icon { animation: none !important; }
+  /* Floating particles canvas */
+  #particles{
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    z-index:0;
+    pointer-events:none;
+  }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.2s, color 0.2s; }
-        
-        /* Layout configuration base setup */
-        body { 
-            background-color: var(--bg-container); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            height: 100dvh; 
-            overflow: hidden; 
-        }
-        
-        .hidden { display: none !important; }
+  /* ================= LAYOUT ================= */
+  .container{
+    position:relative;
+    z-index:1;
+    max-width:1100px;
+    margin:0 auto;
+    padding:32px 20px 80px;
+  }
 
-        /* Responsive Mobile First Container Architecture */
-        .container { 
-            background: var(--bg-container); 
-            width: 100vw; 
-            height: 100vh; 
-            height: 100dvh; 
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden; 
-            position: relative; 
-        }
+  /* ================= HEADER ================= */
+  header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-bottom:28px;
+  }
 
-        /* Desktop Breakpoint Override to maintain visual layout testing constraints */
-        @media (min-width: 480px) {
-            body { background-color: var(--bg-body); }
-            .container { 
-                width: 420px; 
-                height: 680px; 
-                max-height: 92vh;
-                border-radius: 24px; 
-                box-shadow: 0 10px 30px rgba(255,71,87,0.15); 
-            }
-            body.theme-full-love .container { border: 2px solid #ff003c; }
-        }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .brand-icon{
+    width:52px; height:52px;
+    border-radius:16px;
+    background:linear-gradient(135deg,var(--accent1),var(--accent2));
+    display:flex; align-items:center; justify-content:center;
+    font-size:24px;
+    box-shadow:0 0 24px rgba(127,90,240,0.6);
+    flex-shrink:0;
+  }
+  .brand h1{
+    font-size:1.5rem;
+    font-weight:700;
+    letter-spacing:0.5px;
+  }
+  .brand p{
+    font-size:0.82rem;
+    color:var(--text-sub);
+  }
 
-        /* Login Interface */
-        .login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; padding: 30px; text-align: center; overflow-y: auto; }
-        .login-screen .heart-icon { font-size: 50px; color: var(--primary); animation: heartbeat 1.4s infinite; margin-bottom: 15px; }
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            20% { transform: scale(1.1); }
-            40% { transform: scale(1.05); }
-            60% { transform: scale(1.15); }
-            80% { transform: scale(1); }
-            100% { transform: scale(1); }
-        }
-        .login-screen h2 { margin-bottom: 8px; color: var(--text-main); font-size: 24px; }
-        .login-screen p { font-size: 14px; color: var(--text-sub); margin-bottom: 25px; }
-        .login-screen input { width: 100%; max-width: 320px; padding: 14px; margin-bottom: 15px; border: 1px solid var(--border-color); background: var(--bg-container); color: var(--text-main); border-radius: 12px; font-size: 16px; outline: none; text-align: center; font-weight: bold; text-transform: uppercase; }
-        .login-screen button { width: 100%; max-width: 320px; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 16px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .login-screen button:hover { background: var(--primary-hover); }
-        .error-msg { color: #e74c3c; margin-top: 10px; font-size: 14px; font-weight: 500; min-height: 20px; }
+  /* theme switch button */
+  .theme-toggle{
+    width:50px; height:50px;
+    border-radius:50%;
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    font-size:22px;
+    transition: transform .3s ease, box-shadow .3s ease;
+    box-shadow: var(--shadow);
+  }
+  .theme-toggle:hover{
+    transform: scale(1.08) rotate(15deg);
+    box-shadow: 0 0 18px var(--accent1);
+  }
 
-        /* Main App Screen Layout */
-        .app-screen { display: flex; flex-direction: column; height: 100%; width: 100%; overflow: hidden; }
-        .chat-header { background: var(--primary); color: white; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 10px rgba(0,0,0,0.1); z-index: 10; flex-shrink: 0; }
-        .header-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
-        .couple-avatar { font-size: 22px; background: rgba(255,255,255,0.2); width: 38px; height: 38px; display: flex; justify-content: center; align-items: center; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
-        .header-text-block { display: flex; flex-direction: column; min-width: 0; }
-        .header-text-block .title { font-weight: bold; font-size: 14px; letter-spacing: 0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .header-text-block .subtitle { font-size: 11px; opacity: 0.9; }
-        
-        .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-        .theme-select { background: rgba(255,255,255,0.2); color: white; border: none; padding: 6px; border-radius: 6px; font-size: 11px; font-weight: 600; outline: none; cursor: pointer; max-width: 95px; }
-        .theme-select option { color: #2f3542; background: #fff; }
-        .logout-btn { background: rgba(255,255,255,0.15); border: none; padding: 6px 8px; color: white; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; }
+  /* ================= GLASS CARD ================= */
+  .glass{
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
+    border-radius:var(--radius-lg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: var(--shadow);
+    padding:28px;
+    margin-bottom:24px;
+    transition: transform .35s ease, box-shadow .35s ease, background .4s ease, border-color .4s ease;
+  }
+  .glass:hover{
+    transform: translateY(-3px);
+  }
 
-        /* Navigation Viewports */
-        .view-viewport { flex: 1; overflow-y: auto; background: var(--bg-chat); padding: 12px; display: flex; flex-direction: column; gap: 12px; min-height: 0; -webkit-overflow-scrolling: touch; }
-        .tab-view-panel { display: flex; flex-direction: column; gap: 12px; }
-        
-        /* Bottom Navbar Navigation */
-        .bottom-nav { height: 60px; background: #ffffff; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 10; flex-shrink: 0; padding-bottom: max(0px, env(safe-area-inset-bottom)); height: calc(60px + max(0px, env(safe-area-inset-bottom))); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--text-sub); cursor: pointer; flex: 1; height: 100%; gap: 3px; }
-        .nav-item.active { color: var(--primary); }
-        .nav-item .nav-icon { font-size: 20px; }
+  /* ================= MODE TABS ================= */
+  .tabs{
+    display:flex;
+    gap:10px;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+  }
+  .tab-btn{
+    flex:1;
+    min-width:160px;
+    padding:14px 18px;
+    border-radius:var(--radius-md);
+    border:1px solid var(--glass-border);
+    background:rgba(255,255,255,0.04);
+    color:var(--text-main);
+    font-size:0.95rem;
+    font-weight:600;
+    cursor:pointer;
+    text-align:center;
+    transition: all .3s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .tab-btn.active{
+    background:linear-gradient(135deg,var(--accent1),var(--accent2));
+    box-shadow:0 0 22px rgba(127,90,240,0.55);
+    border-color:transparent;
+    color:#fff;
+  }
+  .tab-btn:not(.active):hover{
+    background:rgba(255,255,255,0.09);
+    transform: translateY(-2px);
+  }
 
-        /* Card Component layouts */
-        .card { background: var(--bg-container); border-radius: 14px; padding: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--border-color); }
-        .card-title { font-size: 14px; font-weight: bold; color: var(--text-main); display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
-        
-        /* Utilities styling grid */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .btn-small { background: var(--primary); color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 4px; }
-        .btn-small:hover { background: var(--primary-hover); }
-        .btn-secondary { background: var(--border-color); color: var(--text-main); }
-        input[type="text"], input[type="password"], input[type="date"], select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 13px; outline: none; background: var(--bg-container); color: var(--text-main); -webkit-appearance: none; }
+  /* ================= FORM ELEMENTS ================= */
+  label.field-label{
+    display:block;
+    font-size:0.85rem;
+    color:var(--text-sub);
+    margin-bottom:8px;
+    font-weight:600;
+    letter-spacing:0.3px;
+    text-transform:uppercase;
+  }
 
-        /* Feature Module: Love Counter & Status */
-        .counter-big { font-size: 32px; font-weight: 900; color: var(--primary); text-align: center; margin: 4px 0; animation: heartbeat 2s infinite; }
-        .counter-sub { font-size: 12px; color: var(--text-sub); text-align: center; margin-top: -4px; font-weight: 500; }
-        
-        .mood-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; text-align: center; }
-        .mood-btn { padding: 8px 4px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-container); cursor: pointer; font-size: 12px; display: flex; flex-direction: column; gap: 4px; align-items: center; }
-        .mood-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .status-badge { font-size: 10px; padding: 2px 6px; border-radius: 20px; background: rgba(255,255,255,0.3); font-weight: bold; margin-top: 2px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+  textarea, select{
+    width:100%;
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--glass-border);
+    border-radius:var(--radius-md);
+    padding:16px;
+    color:var(--text-main);
+    font-size:1.05rem;
+    font-family: inherit;
+    resize:vertical;
+    min-height:110px;
+    transition: border-color .3s ease, box-shadow .3s ease, background .3s ease;
+  }
+  textarea::placeholder{ color:var(--text-sub); opacity:0.7; }
+  textarea:focus, select:focus{
+    outline:none;
+    border-color:var(--accent1);
+    box-shadow:0 0 0 3px rgba(127,90,240,0.25);
+    background:rgba(255,255,255,0.08);
+  }
 
-        /* Feature Module: Chat Feed Enhancements */
-        .messages-box { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; min-height: 0; padding-bottom: 5px; }
-        .msg { max-width: 80%; padding: 10px 12px; border-radius: 16px; font-size: 14px; line-height: 1.4; position: relative; word-break: break-word; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; flex-direction: column; cursor: pointer; }
-        .msg.me { align-self: flex-end; background: var(--bg-msg-me); color: var(--text-main); border-top-right-radius: 4px; }
-        .msg.them { align-self: flex-start; background: var(--bg-msg-them); color: var(--text-main); border-top-left-radius: 4px; border: 1px solid var(--border-color); }
-        
-        /* Chat Ticks Meta Mechanics */
-        .msg-meta-wrapper { display: flex; align-items: center; justify-content: flex-end; gap: 4px; margin-top: 3px; align-self: flex-end; font-size: 9px; }
-        .msg .msg-time { color: #888; font-weight: 500; }
-        .msg-status { font-size: 11px; color: #888; font-weight: bold; line-height: 1; }
-        .msg-status.read { color: #34b7f1; }
+  .options-row{
+    display:flex;
+    gap:16px;
+    align-items:center;
+    flex-wrap:wrap;
+    margin:18px 0;
+  }
+  .option-group{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  select{
+    min-height:auto;
+    padding:10px 14px;
+    cursor:pointer;
+    width:auto;
+  }
 
-        /* Feature Module: Message Actions System Modal */
-        .msg-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 150; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .msg-modal-content { background: var(--bg-container); padding: 20px; border-radius: 20px; width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; border: 1px solid var(--border-color); }
-        .msg-modal-content h3 { font-size: 16px; margin-bottom: 5px; color: var(--text-main); }
-        .modal-action-btn { width: 100%; padding: 12px; font-size: 14px; font-weight: bold; border-radius: 12px; border: none; cursor: pointer; text-align: center; }
-        .modal-action-btn.danger { background: #ff4757; color: white; }
-        .modal-action-btn.danger:hover { background: #ff6b81; }
-        .modal-action-btn.secondary { background: var(--border-color); color: var(--text-main); }
+  /* ================= BUTTONS ================= */
+  .btn-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:18px;
+  }
+  button{
+    font-family: inherit;
+    cursor:pointer;
+    border:none;
+    border-radius:var(--radius-md);
+    font-weight:600;
+    font-size:0.92rem;
+    padding:13px 22px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+  }
+  button:active{ transform: scale(0.96); }
 
-        /* Chat Input Controls & Tools Panel Layout Fixes */
-        .chat-controls-wrapper { display: flex; flex-direction: column; background: #fdfdfd; border-top: 1px solid var(--border-color); flex-shrink: 0; }
-        .emoji-bar { display: flex; justify-content: space-around; padding: 6px; background: var(--bg-chat); border-bottom: 1px solid var(--border-color); }
-        .emoji-btn { font-size: 18px; cursor: pointer; background: none; border: none; padding: 2px 6px; }
-        .input-box { display: flex; padding: 8px 10px; align-items: center; gap: 6px; background: var(--bg-container); }
-        .input-box input { flex: 1; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 24px; outline: none; font-size: 14px; background: #f8f9fa; color: var(--text-main); min-width: 0; }
-        .circle-control-btn { background: var(--primary); color: white; border: none; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 15px; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1); flex-shrink: 0; }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--accent1),var(--accent2));
+    color:#fff;
+    box-shadow:0 0 20px rgba(127,90,240,0.5);
+  }
+  .btn-primary:hover{
+    box-shadow:0 0 32px rgba(127,90,240,0.85);
+    transform: translateY(-2px);
+  }
 
-        /* Custom Type Dropdown Styling */
-        .msg-type-dropdown { width: auto !important; max-width: 90px; padding: 8px 6px !important; border-radius: 20px !important; font-size: 11px !important; background: #f1f2f6 !important; border: 1px solid var(--border-color) !important; cursor: pointer; font-weight: 600; text-overflow: ellipsis; flex-shrink: 0; }
-        .msg-badge { display: inline-block; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 6px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; width: fit-content; }
-        .badge-link { background: #dfe4ea; color: #2f3542; border-left: 3px solid #3b82f6; }
-        .badge-love { background: #ffeaa7; color: #d63031; border-left: 3px solid #ff4757; }
-        .badge-sweet { background: #dff9fb; color: #130cb7; border-left: 3px solid #a29bfe; }
-        
-        /* Fullscreen Overlay Gift Alerts Trigger Animations */
-        .gift-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; font-weight: bold; pointer-events: none; opacity: 0; transition: opacity 0.4s; }
-        .gift-overlay.show { opacity: 1; pointer-events: auto; }
-        .gift-anim-box { font-size: 70px; animation: bouncePop 1.5s ease forwards; }
-        @keyframes bouncePop { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); } }
-    </style>
+  .btn-secondary{
+    background:rgba(255,255,255,0.08);
+    color:var(--text-main);
+    border:1px solid var(--glass-border);
+  }
+  .btn-secondary:hover{
+    background:rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+  }
+
+  .btn-danger{
+    background: rgba(255,84,112,0.15);
+    color:var(--danger);
+    border:1px solid rgba(255,84,112,0.4);
+  }
+  .btn-danger:hover{
+    background: rgba(255,84,112,0.28);
+    box-shadow:0 0 18px rgba(255,84,112,0.45);
+  }
+
+  .btn-ghost{
+    background:transparent;
+    color:var(--accent2);
+    border:1px solid rgba(44,177,188,0.4);
+  }
+  .btn-ghost:hover{
+    background:rgba(44,177,188,0.12);
+  }
+
+  /* ================= OUTPUT AREA ================= */
+  .output-box{
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--glass-border);
+    border-radius:var(--radius-md);
+    padding:20px;
+    min-height:90px;
+    font-size:1.25rem;
+    font-weight:600;
+    letter-spacing:1px;
+    word-break:break-word;
+    line-height:1.6;
+    color:var(--accent3);
+    transition: background .3s ease;
+  }
+  .output-box.empty{
+    color:var(--text-sub);
+    font-weight:400;
+    font-size:0.95rem;
+    letter-spacing:normal;
+  }
+
+  /* ================= STATS GRID ================= */
+  .stats-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px,1fr));
+    gap:14px;
+    margin-top:18px;
+  }
+  .stat-card{
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--glass-border);
+    border-radius:var(--radius-sm);
+    padding:14px;
+    text-align:center;
+    transition: transform .3s ease, background .3s ease;
+  }
+  .stat-card:hover{
+    transform: translateY(-3px);
+    background:rgba(255,255,255,0.09);
+  }
+  .stat-value{
+    font-size:1.6rem;
+    font-weight:700;
+    background:linear-gradient(135deg,var(--accent1),var(--accent3));
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .stat-label{
+    font-size:0.72rem;
+    color:var(--text-sub);
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    margin-top:4px;
+  }
+
+  /* ================= HISTORY ================= */
+  .history-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    max-height:280px;
+    overflow-y:auto;
+    padding-right:4px;
+  }
+  .history-list::-webkit-scrollbar{ width:6px; }
+  .history-list::-webkit-scrollbar-thumb{ background:var(--accent1); border-radius:4px; }
+
+  .history-item{
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--glass-border);
+    border-radius:var(--radius-sm);
+    padding:12px 14px;
+    cursor:pointer;
+    transition: background .25s ease, transform .25s ease;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .history-item:hover{
+    background:rgba(127,90,240,0.18);
+    transform: translateX(4px);
+  }
+  .history-mode{
+    font-size:0.7rem;
+    text-transform:uppercase;
+    color:var(--accent2);
+    font-weight:700;
+    letter-spacing:0.5px;
+  }
+  .history-text{
+    font-size:0.88rem;
+    color:var(--text-main);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .history-empty{
+    color:var(--text-sub);
+    font-size:0.88rem;
+    text-align:center;
+    padding:20px;
+  }
+
+  /* ================= SECTION HEADINGS ================= */
+  .section-title{
+    font-size:1.05rem;
+    font-weight:700;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  /* ================= FOOTER ================= */
+  footer{
+    text-align:center;
+    color:var(--text-sub);
+    font-size:0.8rem;
+    margin-top:30px;
+    opacity:0.8;
+  }
+
+  /* ================= TOAST NOTIFICATION ================= */
+  #toast-container{
+    position:fixed;
+    bottom:24px;
+    right:24px;
+    z-index:999;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .toast{
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color:var(--text-main);
+    padding:14px 20px;
+    border-radius:var(--radius-md);
+    box-shadow:var(--shadow);
+    font-size:0.9rem;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:220px;
+    animation: toastIn .35s ease forwards;
+    border-left:4px solid var(--accent1);
+  }
+  .toast.success{ border-left-color: var(--success); }
+  .toast.error{ border-left-color: var(--danger); }
+  .toast.fade-out{ animation: toastOut .35s ease forwards; }
+
+  @keyframes toastIn{
+    from{ opacity:0; transform: translateX(40px); }
+    to{ opacity:1; transform: translateX(0); }
+  }
+  @keyframes toastOut{
+    from{ opacity:1; transform: translateX(0); }
+    to{ opacity:0; transform: translateX(40px); }
+  }
+
+  /* ================= RESPONSIVE GRID FOR MAIN + SIDEBAR ================= */
+  .layout-grid{
+    display:grid;
+    grid-template-columns: 2fr 1fr;
+    gap:24px;
+  }
+  @media (max-width: 860px){
+    .layout-grid{ grid-template-columns: 1fr; }
+    .brand h1{ font-size:1.25rem; }
+    .output-box{ font-size:1.05rem; }
+  }
+
+  .kbd{
+    background:rgba(255,255,255,0.12);
+    border:1px solid var(--glass-border);
+    border-radius:4px;
+    padding:1px 6px;
+    font-size:0.75rem;
+    font-family: monospace;
+  }
+
+  .hint{
+    font-size:0.78rem;
+    color:var(--text-sub);
+    margin-top:10px;
+    line-height:1.5;
+  }
+</style>
 </head>
-<body>
+<body class="dark">
 
-<div class="container">
-    <div id="giftOverlay" class="gift-overlay">
-        <div id="giftAnimAsset" class="gift-anim-box">🎁</div>
-        <h2 id="giftAnimText" style="margin-top:15px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">A Sweet Surprise!</h2>
+  <!-- floating particles canvas, animated via JS -->
+  <canvas id="particles"></canvas>
+
+  <!-- toast notifications appear here -->
+  <div id="toast-container"></div>
+
+  <div class="container">
+
+    <!-- ============ HEADER ============ -->
+    <header>
+      <div class="brand">
+        <div class="brand-icon">🔤</div>
+        <div>
+          <h1>Alphabet Number Converter</h1>
+          <p>Premium A↔1 conversion tool</p>
+        </div>
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+    </header>
+
+    <div class="layout-grid">
+
+      <!-- ============ MAIN CONVERTER PANEL ============ -->
+      <div>
+        <div class="glass">
+
+          <!-- Mode tabs -->
+          <div class="tabs">
+            <button class="tab-btn active" data-mode="n2num">🔢 Name → Numbers</button>
+            <button class="tab-btn" data-mode="num2n">🔡 Numbers → Name</button>
+          </div>
+
+          <!-- Input -->
+          <label class="field-label" id="inputLabel" for="inputArea">Enter your text</label>
+          <textarea id="inputArea" placeholder="Type something, e.g. HELLO WORLD"></textarea>
+
+          <!-- Options -->
+          <div class="options-row">
+            <div class="option-group">
+              <label class="field-label" for="separatorSelect">Output / Space Separator</label>
+              <select id="separatorSelect">
+                <option value="space">Space ( )</option>
+                <option value="dash">Dash (-)</option>
+                <option value="comma">Comma (,)</option>
+              </select>
+            </div>
+            <div class="option-group">
+              <label class="field-label" for="caseSelect">Letter Case (Numbers→Name)</label>
+              <select id="caseSelect">
+                <option value="upper">UPPERCASE</option>
+                <option value="lower">lowercase</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="btn-row">
+            <button class="btn-primary" id="convertBtn">⚡ Convert</button>
+            <button class="btn-secondary" id="copyBtn">📋 Copy</button>
+            <button class="btn-danger" id="clearBtn">🗑️ Clear</button>
+            <button class="btn-ghost" id="exportTxtBtn">⬇️ TXT</button>
+            <button class="btn-ghost" id="exportJsonBtn">⬇️ JSON</button>
+          </div>
+
+          <div class="hint">
+            Shortcuts: <span class="kbd">Ctrl+Enter</span> Convert &nbsp;
+            <span class="kbd">Ctrl+L</span> Clear &nbsp;
+            <span class="kbd">Ctrl+C</span> Copy result (when input not focused for text selection)
+          </div>
+        </div>
+
+        <!-- Output -->
+        <div class="glass">
+          <div class="section-title">✨ Result</div>
+          <div class="output-box empty" id="outputBox">Your converted result will appear here...</div>
+        </div>
+
+        <!-- Stats -->
+        <div class="glass">
+          <div class="section-title">📊 Statistics</div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value" id="statChars">0</div>
+              <div class="stat-label">Characters</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="statLetters">0</div>
+              <div class="stat-label">Letters</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="statNumbers">0</div>
+              <div class="stat-label">Numbers</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="statSum">0</div>
+              <div class="stat-label">Total Sum</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SIDEBAR: HISTORY ============ -->
+      <div>
+        <div class="glass">
+          <div class="section-title">🕒 History <span style="font-weight:400;font-size:0.75rem;color:var(--text-sub);">(last 10)</span></div>
+          <div class="history-list" id="historyList">
+            <div class="history-empty">No conversions yet.</div>
+          </div>
+          <div class="btn-row" style="margin-top:14px;">
+            <button class="btn-ghost" id="clearHistoryBtn" style="width:100%;justify-content:center;">Clear History</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <div id="msgActionModal" class="msg-modal hidden">
-        <div class="msg-modal-content">
-            <h3>Message Options</h3>
-            <button id="deleteForMeBtn" class="modal-action-btn danger">Delete for me</button>
-            <button id="deleteForEveryoneBtn" class="modal-action-btn danger hidden">Delete for everyone</button>
-            <button id="cancelMsgModalBtn" class="modal-action-btn secondary">Cancel</button>
-        </div>
-    </div>
+    <footer>
+      Built By :- &amp; R.Rizwinth © Alphabet Number Converter
+    </footer>
+  </div>
 
-    <div id="loginScreen" class="login-screen">
-        <div class="heart-icon" id="loginHeartIcon">💝</div>
-        <h2>L143V Core</h2>
-        <p>A secure link dedicated for us two</p>
-        <input type="text" id="usernameInput" placeholder="Enter AB or BA" autocomplete="off" maxlength="2">
-        <input type="password" id="passwordInput" placeholder="Enter Password" style="display:none; text-transform:none;" autocomplete="off">
-        <button id="loginBtn">Enter Nest</button>
-        <div id="errorMsg" class="error-msg"></div>
-    </div>
+<script>
+/* =========================================================================
+   ALPHABET NUMBER CONVERTER — APP LOGIC
+   Sections:
+   1. Particle background animation
+   2. Theme management (dark/light, localStorage)
+   3. Mode/tab management
+   4. Core conversion functions
+   5. Stats calculation
+   6. Toast notifications
+   7. History management (localStorage)
+   8. Export (TXT/JSON)
+   9. Clipboard copy
+   10. Keyboard shortcuts
+   11. Event wiring
+   ========================================================================= */
 
-    <div id="appScreen" class="app-screen hidden">
-        <div class="chat-header">
-            <div class="header-info">
-                <div class="couple-avatar" id="headerAvatarBox">💖</div>
-                <div class="header-text-block">
-                    <span class="title" id="chattingWithDisplay">L143V Core</span>
-                    <span id="partnerStatusDisplay" class="status-badge">Syncing Status...</span>
-                </div>
-            </div>
-            
-            <div class="header-actions">
-                <select id="themeSelector" class="theme-select">
-                    <option value="rose">🌹 Sweet Rose</option>
-                    <option value="sunset">🌅 Sunset Glow</option>
-                    <option value="lavender">🔮 Lavender Dream</option>
-                    <option value="midnight">🌃 Midnight Sky</option>
-                    <option value="full-love">💘 Full Love Mode</option>
-                    <option value="study">📚 Focus & Study</option>
-                </select>
-                <button id="logoutBtn" class="logout-btn">Leave</button>
-            </div>
-        </div>
-        
-        <div id="viewViewport" class="view-viewport">
-            
-            <div id="viewHome" class="tab-view-panel display-block-node">
-                <div class="card">
-                    <div class="card-title" id="loveCounterCardTitle">❤️ Our Love Counter</div>
-                    <div class="counter-big" id="daysTogetherDisplay">000</div>
-                    <div class="counter-sub" id="counterSubText">Days Together Counter</div>
-                    <div style="font-size:12px; margin-top:4px; display:flex; flex-direction:column; gap:4px; border-top:1px dashed var(--border-color); padding-top:6px;">
-                        <span id="anniversaryCountdownDisplay">⏳ Calculating next milestone...</span>
-                        <span id="specialDateReminderDisplay">📅 Next Date: None scheduled</span>
-                    </div>
-                    <input type="date" id="anniversaryDatePicker" style="margin-top: 5px; font-size:11px; padding:6px;" title="Set Anniversary Date">
-                </div>
+/* ---------------------- 1. PARTICLE BACKGROUND ---------------------- */
+(function initParticles(){
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  const PARTICLE_COUNT = 45;
 
-                <div class="card">
-                    <div class="card-title">💕 Update Your Current Mood</div>
-                    <div class="mood-grid">
-                        <button class="mood-btn" data-mood="Happy 😊"><span>😊</span><span style="font-size:10px;">Happy</span></button>
-                        <button class="mood-btn" data-mood="Busy 📚"><span>📚</span><span style="font-size:10px;">Busy</span></button>
-                        <button class="mood-btn" data-mood="Sleeping 😴"><span>😴</span><span style="font-size:10px;">Sleep</span></button>
-                        <button class="mood-btn" data-mood="Available 💖"><span>💖</span><span style="font-size:10px;">Ready</span></button>
-                    </div>
-                </div>
+  function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
 
-                <div class="card">
-                    <div class="card-title">🌎 Shared Live Geolocation</div>
-                    <div style="font-size: 12px; color: var(--text-main); display:flex; flex-direction:column; gap:6px;">
-                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
-                            <input type="checkbox" id="locationShareToggle"> Stream My Live Coordinates
-                        </label>
-                        <div id="partnerLocationBox" style="background:var(--bg-chat); padding:8px; border-radius:8px; font-weight:500; margin-top:4px;">
-                            Partner Location Unknown
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">🎁 Virtual Gift Dispatcher</div>
-                    <div class="grid-2">
-                        <button class="btn-small" onclick="triggerGiftDelivery('🌹', 'Virtual Flower')">🌹 Send Flowers</button>
-                        <button class="btn-small" onclick="triggerGiftDelivery('🍫', 'Box of Chocolates')">🍫 Send Sweets</button>
-                        <button class="btn-small" onclick="triggerGiftDelivery('🎈', 'Heart Balloon')">🎈 Send Balloon</button>
-                        <button class="btn-small" onclick="triggerGiftDelivery('✨', 'Magic Pixie Dust')">✨ Send Magic</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="viewChat" class="tab-view-panel display-block-node hidden" style="flex: 1; display:flex; flex-direction:column; min-height: 0;">
-                <div style="display: flex; justify-content: flex-end; padding-bottom: 5px; flex-shrink: 0;">
-                    <button id="clearChatBtn" class="btn-small btn-secondary" style="font-size: 11px; padding: 4px 8px; border-radius: 6px;">🧹 Clear Chat History</button>
-                </div>
-                <div id="messagesBox" class="messages-box"></div>
-            </div>
-            
-            <div id="viewProfile" class="tab-view-panel display-block-node hidden">
-                <div class="card">
-                    <div class="card-title">👤 Edit Your Profile</div>
-                    <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:10px;">
-                        <img id="profilePicPreview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><rect width='80' height='80' fill='%23ffccd5'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='30'>💖</text></svg>" style="width:80px; height:80px; border-radius:50%; object-fit:cover; border: 3px solid var(--primary);">
-                        <input type="file" id="profilePicInput" accept="image/*" style="font-size:11px; width:100%;">
-                    </div>
-                    <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
-                        <div>
-                            <label style="font-size:11px; font-weight:bold; color:var(--text-sub);">Display Name</label>
-                            <input type="text" id="profileNameInput" placeholder="Your beautiful name...">
-                        </div>
-                        <div>
-                            <label style="font-size:11px; font-weight:bold; color:var(--text-sub);">Protect Your Profile (Password)</label>
-                            <input type="password" id="profilePasswordInput" placeholder="Leave blank to keep unchanged">
-                        </div>
-                        <div>
-                            <label style="font-size:11px; font-weight:bold; color:var(--text-sub);">About Me</label>
-                            <textarea id="profileAboutInput" placeholder="Write a little something about yourself..." rows="3" style="resize:none; font-family:inherit;"></textarea>
-                        </div>
-                        <button class="btn-small" id="saveProfileBtn" style="margin-top:5px; padding:12px;">Save Profile Changes</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div id="stickyChatInputController" class="chat-controls-wrapper hidden">
-            <div class="emoji-bar">
-                <button class="emoji-btn" onclick="injectQuickEmoji('❤️')">❤️</button>
-                <button class="emoji-btn" onclick="injectQuickEmoji('😍')">😍</button>
-                <button class="emoji-btn" onclick="injectQuickEmoji('😘')">😘</button>
-                <button class="emoji-btn" onclick="injectQuickEmoji('😂')">😂</button>
-                <button class="emoji-btn" onclick="injectQuickEmoji('😭')">😭</button>
-                <button class="emoji-btn" onclick="injectQuickEmoji('👍')">👍</button>
-            </div>
-            <div class="input-box">
-                <select id="msgTypeSelector" class="msg-type-dropdown">
-                    <option value="chat">💬 Chat</option>
-                    <option value="link">🔗 Link</option>
-                    <option value="love">💖 Love</option>
-                    <option value="sweet">✨ Apprec.</option>
-                </select>
-                <input type="text" id="messageInput" placeholder="Write something sweet...">
-                <button id="sendBtn" class="circle-control-btn">➤</button>
-            </div>
-        </div>
-
-        <div class="bottom-nav">
-            <div class="nav-item active" data-target="viewHome" onclick="switchNavTab(this)">
-                <span class="nav-icon">🏠</span><span>Us</span>
-            </div>
-            <div class="nav-item" data-target="viewChat" onclick="switchNavTab(this)">
-                <span class="nav-icon">💬</span><span>Chat</span>
-            </div>
-            <div class="nav-item" data-target="viewProfile" onclick="switchNavTab(this)">
-                <span class="nav-icon">👤</span><span>Profile</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, doc, setDoc, getDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-
-    // Verified Direct Firebase Configuration Linked Data
-    const firebaseConfig = {
-        apiKey: "AIzaSyBlYJQZ1g6pXYkYWj-fbksuORtrXN35anI",
-        authDomain: "lithesh-9aa48.firebaseapp.com",
-        projectId: "lithesh-9aa48",
-        storageBucket: "lithesh-9aa48.firebasestorage.app",
-        messagingSenderId: "64335527807",
-        appId: "1:64335527807:web:fd60b53b23163cf0ffe44a",
-        measurementId: "G-5NRWYBG2VP"
+  function createParticle(){
+    return {
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2.5 + 0.8,
+      speedY: Math.random() * 0.4 + 0.08,
+      speedX: (Math.random() - 0.5) * 0.3,
+      opacity: Math.random() * 0.5 + 0.15
     };
+  }
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
+  for(let i=0;i<PARTICLE_COUNT;i++){ particles.push(createParticle()); }
 
-    // Global Operational Context Elements
-    let currentUser = localStorage.getItem('chatUser') || null;
-    let currentPartnerName = null;
-    let currentUserName = null;
-    let activeUnsubscribeStreams = [];
-    let locationWatchId = null;
-
-    // Track targets for active deletion modals
-    let targetedDeletionMsgId = null;
-    let targetedDeletionMsgSender = null;
-
-    // Element Target Mappings Nodes
-    const loginScreen = document.getElementById('loginScreen');
-    const appScreen = document.getElementById('appScreen');
-    const usernameInput = document.getElementById('usernameInput');
-    const passwordInput = document.getElementById('passwordInput');
-    const loginBtn = document.getElementById('loginBtn');
-    const errorMsg = document.getElementById('errorMsg');
-    const chattingWithDisplay = document.getElementById('chattingWithDisplay');
-    const partnerStatusDisplay = document.getElementById('partnerStatusDisplay');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const messagesBox = document.getElementById('messagesBox');
-    const messageInput = document.getElementById('messageInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const themeSelector = document.getElementById('themeSelector');
-    const stickyChatInputController = document.getElementById('stickyChatInputController');
-    const msgTypeSelector = document.getElementById('msgTypeSelector');
-
-    // Theme Management Block
-    const savedTheme = localStorage.getItem('coupleTheme') || 'rose';
-    themeSelector.value = savedTheme;
-    applyThemeLayout(savedTheme);
-
-    themeSelector.addEventListener('change', (e) => {
-        const selection = e.target.value;
-        localStorage.setItem('coupleTheme', selection);
-        applyThemeLayout(selection);
-        updateChatHeader(); 
+  function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(127,90,240,${p.opacity})`;
+      ctx.fill();
+      p.y -= p.speedY;
+      p.x += p.speedX;
+      if(p.y < -10){
+        p.y = canvas.height + 10;
+        p.x = Math.random() * canvas.width;
+      }
     });
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
 
-    function applyThemeLayout(themeName) {
-        document.body.className = "";
-        if (themeName !== 'rose') document.body.classList.add(`theme-${themeName}`);
+/* ---------------------- 2. THEME MANAGEMENT ---------------------- */
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
 
-        const loginIcon = document.getElementById('loginHeartIcon');
-        const loveCounterTitle = document.getElementById('loveCounterCardTitle');
-        const counterSub = document.getElementById('counterSubText');
-        
-        if (themeName === 'study') {
-            if (loginIcon) loginIcon.textContent = "📚";
-            if (loveCounterTitle) loveCounterTitle.textContent = "⏱️ Focus Accountability";
-            if (counterSub) counterSub.textContent = "Days Tracked Together";
-        } else {
-            if (loginIcon) loginIcon.textContent = "💝";
-            if (loveCounterTitle) loveCounterTitle.textContent = "❤️ Our Love Counter";
-            if (counterSub) counterSub.textContent = "Days Together Counter";
-        }
+function applyTheme(theme){
+  if(theme === 'light'){
+    body.classList.add('light');
+    body.classList.remove('dark');
+    themeToggle.textContent = '☀️';
+  } else {
+    body.classList.add('dark');
+    body.classList.remove('light');
+    themeToggle.textContent = '🌙';
+  }
+  localStorage.setItem('anc_theme', theme);
+}
+
+// Load saved theme on startup, default to dark
+applyTheme(localStorage.getItem('anc_theme') || 'dark');
+
+themeToggle.addEventListener('click', ()=>{
+  const isLight = body.classList.contains('light');
+  applyTheme(isLight ? 'dark' : 'light');
+});
+
+/* ---------------------- 3. MODE / TAB MANAGEMENT ---------------------- */
+let currentMode = 'n2num'; // 'n2num' = Name->Numbers, 'num2n' = Numbers->Name
+const tabBtns = document.querySelectorAll('.tab-btn');
+const inputArea = document.getElementById('inputArea');
+const inputLabel = document.getElementById('inputLabel');
+
+tabBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    tabBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMode = btn.dataset.mode;
+
+    if(currentMode === 'n2num'){
+      inputLabel.textContent = 'Enter your text';
+      inputArea.placeholder = 'Type something, e.g. HELLO WORLD';
+    } else {
+      inputLabel.textContent = 'Enter numbers (space separated, use / for word breaks)';
+      inputArea.placeholder = 'e.g. 8 5 12 12 15 / 23 15 18 12 4';
     }
+    runConversion(); // live update on mode switch too
+  });
+});
 
-    function updateChatHeader() {
-        const peerUser = (currentUser === 'AB') ? 'BA' : 'AB';
-        const displayUser = currentUserName || currentUser || "You";
-        const displayPeer = currentPartnerName || peerUser;
-        const currentTheme = document.getElementById('themeSelector').value;
-        const separator = currentTheme === 'study' ? '🤝' : '💖';
-        
-        chattingWithDisplay.textContent = `L143V Core ${separator} ${displayUser} & ${displayPeer}`;
+/* ---------------------- 4. CORE CONVERSION FUNCTIONS ---------------------- */
+
+// Get the separator character chosen by user for joining numbers
+function getSeparator(){
+  const val = document.getElementById('separatorSelect').value;
+  if(val === 'dash') return '-';
+  if(val === 'comma') return ',';
+  return ' ';
+}
+
+/**
+ * Convert a name/text string into alphabet numbers.
+ * Rules:
+ * - A=1 ... Z=26 (case-insensitive)
+ * - Punctuation/symbols ignored
+ * - Spaces preserved as "/" word separator
+ */
+function nameToNumbers(text){
+  const sep = getSeparator();
+  // Split into words by whitespace, preserve word boundaries with "/"
+  const words = text.split(/\s+/).filter(w => w.length > 0);
+
+  const convertedWords = words.map(word=>{
+    const nums = [];
+    for(const ch of word){
+      const lower = ch.toLowerCase();
+      const code = lower.charCodeAt(0) - 96; // 'a' = 97
+      if(code >= 1 && code <= 26){
+        nums.push(code);
+      }
+      // invalid / punctuation characters are simply ignored
     }
+    return nums.join(sep);
+  }).filter(w => w.length > 0);
 
-    // Navigation Subsystem Tab Control Logic
-    window.switchNavTab = function(element) {
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab-view-panel').forEach(el => el.classList.add('hidden'));
-        
-        element.classList.add('active');
-        const activeTargetID = element.getAttribute('data-target');
-        document.getElementById(activeTargetID).classList.remove('hidden');
+  return convertedWords.join(' / ');
+}
 
-        if (activeTargetID === 'viewChat') {
-            stickyChatInputController.classList.remove('hidden');
-            messagesBox.scrollTop = messagesBox.scrollHeight;
-            
-            // Instantly transition partner messages on page to Blue Ticks
-            document.querySelectorAll('.msg.them[data-unread-flag="true"]').forEach(node => {
-                const docId = node.getAttribute('data-msg-id');
-                setDoc(doc(db, "messages", docId), { status: 'read' }, { merge: true });
-            });
-        } else {
-            stickyChatInputController.classList.add('hidden');
-        }
-    };
+/**
+ * Convert numbers back into a name/text string.
+ * Rules:
+ * - Numbers 1-26 map to A-Z
+ * - Words separated by "/"
+ * - Numbers within a word separated by space, dash, or comma (auto-detected)
+ * - Invalid numbers (out of 1-26 range or NaN) are skipped gracefully
+ */
+function numbersToName(text){
+  const caseMode = document.getElementById('caseSelect').value;
+  // Split into words using "/" as the word boundary
+  const wordChunks = text.split('/');
 
-    // Global quick access wrappers
-    window.injectQuickEmoji = function(emoji) { messageInput.value += emoji; messageInput.focus(); };
-
-    // Gate Access Handling
-    loginBtn.addEventListener('click', processLogin);
-    usernameInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') processLogin(); });
-    passwordInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') processLogin(); });
-
-    if (currentUser) { openCoreApp(); }
-
-    async function processLogin() {
-        const inputName = usernameInput.value.trim().toUpperCase();
-        if (inputName === 'AB' || inputName === 'BA') {
-            loginBtn.textContent = "Checking...";
-            
-            try {
-                const docRef = doc(db, "profiles", inputName);
-                const docSnap = await getDoc(docRef);
-                
-                if (docSnap.exists() && docSnap.data().password) {
-                    if (passwordInput.style.display === 'none') {
-                        passwordInput.style.display = 'block';
-                        errorMsg.textContent = "Please enter your password to continue.";
-                        loginBtn.textContent = "Enter Nest";
-                        return;
-                    }
-                    if (passwordInput.value !== docSnap.data().password) {
-                        errorMsg.textContent = "Incorrect password. Try again.";
-                        loginBtn.textContent = "Enter Nest";
-                        return;
-                    }
-                }
-                
-                currentUser = inputName;
-                localStorage.setItem('chatUser', currentUser);
-                errorMsg.textContent = "";
-                usernameInput.value = "";
-                passwordInput.value = "";
-                passwordInput.style.display = "none";
-                loginBtn.textContent = "Enter Nest";
-                
-                openCoreApp();
-            } catch (err) {
-                console.error(err);
-                errorMsg.textContent = "Error authenticating. Check connection.";
-                loginBtn.textContent = "Enter Nest";
-            }
-        } else {
-            errorMsg.textContent = "Access denied. Only AB & BA can open this link.";
-            loginBtn.textContent = "Enter Nest";
-        }
-    }
-
-    logoutBtn.addEventListener('click', () => {
-        if (locationWatchId) navigator.geolocation.clearWatch(locationWatchId);
-        activeUnsubscribeStreams.forEach(unsub => unsub());
-        activeUnsubscribeStreams = [];
-        localStorage.removeItem('chatUser');
-        currentUser = null;
-        currentUserName = null;
-        currentPartnerName = null;
-        appScreen.classList.add('hidden');
-        loginScreen.classList.remove('hidden');
+  const convertedWords = wordChunks.map(chunk=>{
+    // Accept space, dash, or comma as number separators within a word
+    const tokens = chunk.split(/[\s,\-]+/).filter(t => t.length > 0);
+    let letters = '';
+    tokens.forEach(tok=>{
+      const num = parseInt(tok, 10);
+      if(!isNaN(num) && num >= 1 && num <= 26){
+        const letter = String.fromCharCode(96 + num); // lowercase base
+        letters += letter;
+      }
+      // invalid numbers (out of range, NaN) are gracefully skipped
     });
+    return letters;
+  }).filter(w => w.length > 0);
 
-    function openCoreApp() {
-        loginScreen.classList.add('hidden');
-        appScreen.classList.remove('hidden');
-        updateChatHeader();
-        initializeRealtimeSynchronizations();
+  let result = convertedWords.join(' ');
+  if(caseMode === 'upper'){
+    result = result.toUpperCase();
+  }
+  return result;
+}
+
+/* ---------------------- 5. STATS CALCULATION ---------------------- */
+function updateStats(inputText){
+  const charCount = inputText.length;
+  let letterCount = 0;
+  let numberCount = 0;
+  let sum = 0;
+
+  if(currentMode === 'n2num'){
+    for(const ch of inputText){
+      const lower = ch.toLowerCase();
+      const code = lower.charCodeAt(0) - 96;
+      if(code >= 1 && code <= 26){
+        letterCount++;
+        sum += code;
+      }
     }
-
-    // Comprehensive Pipeline Data Streams Layer Synchronization
-    function initializeRealtimeSynchronizations() {
-        const peerUser = (currentUser === 'AB') ? 'BA' : 'AB';
-
-        // Stream 0A: My Profile Sync Listener
-        const unsubMyProfile = onSnapshot(doc(db, "profiles", currentUser), (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                if (data.name) {
-                    document.getElementById('profileNameInput').value = data.name;
-                    currentUserName = data.name;
-                }
-                if (data.about) document.getElementById('profileAboutInput').value = data.about;
-                if (data.photoUrl) {
-                    document.getElementById('profilePicPreview').src = data.photoUrl;
-                }
-                updateChatHeader();
-            }
-        });
-        activeUnsubscribeStreams.push(unsubMyProfile);
-
-        // Stream 0B: Partner Profile Sync Listener
-        const unsubPartnerProfile = onSnapshot(doc(db, "profiles", peerUser), (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                if (data.name) currentPartnerName = data.name;
-                if (data.photoUrl) {
-                    document.getElementById('headerAvatarBox').innerHTML = `<img src="${data.photoUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
-                }
-                updateChatHeader();
-            }
-        });
-        activeUnsubscribeStreams.push(unsubPartnerProfile);
-
-        // Stream 1: Chat Stream Loop Engine with WhatsApp Ticks & Custom Badges
-        const msgQuery = query(collection(db, "messages"), orderBy("timestamp", "asc"));
-        const unsubChat = onSnapshot(msgQuery, (snapshot) => {
-            messagesBox.innerHTML = "";
-            const isChatViewActive = !document.getElementById('viewChat').classList.contains('hidden');
-            const userChatClearedTimestamp = parseInt(localStorage.getItem(`chatClearedAt_${currentUser}`) || '0');
-
-            snapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                const docId = docSnap.id;
-
-                if (data.timestamp <= userChatClearedTimestamp) return;
-                if (data.deletedFor && data.deletedFor.includes(currentUser)) return;
-
-                if (data.sender !== currentUser) {
-                    if (isChatViewActive && data.status !== 'read') {
-                        setDoc(doc(db, "messages", docId), { status: 'read' }, { merge: true });
-                    } else if (!isChatViewActive && (!data.status || data.status === 'sent')) {
-                        setDoc(doc(db, "messages", docId), { status: 'delivered' }, { merge: true });
-                    }
-                }
-
-                const msgElement = document.createElement('div');
-                const isMe = data.sender === currentUser;
-                msgElement.classList.add('msg', isMe ? 'me' : 'them');
-                
-                msgElement.setAttribute('data-msg-id', docId);
-                if (data.sender !== currentUser && data.status !== 'read') {
-                    msgElement.setAttribute('data-unread-flag', 'true');
-                }
-                
-                if (!data.deletedForAll) {
-                    msgElement.addEventListener('click', () => {
-                        openMessageDeletionWorkflow(docId, data.sender);
-                    });
-                }
-
-                const timeString = new Date(data.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-                let ticksHtml = '';
-                if (isMe && !data.deletedForAll) {
-                    if (!data.status || data.status === 'sent') {
-                        ticksHtml = '<span class="msg-status">✓</span>';
-                    } else if (data.status === 'delivered') {
-                        ticksHtml = '<span class="msg-status">✓✓</span>';
-                    } else if (data.status === 'read') {
-                        ticksHtml = '<span class="msg-status read">✓✓</span>';
-                    }
-                }
-
-                // Append Category Badge Label structures to conversation cards
-                let badgeHtml = '';
-                if (data.msgType === 'link') {
-                    badgeHtml = `<span class="msg-badge badge-link">🔗 Link Suggestion</span>`;
-                } else if (data.msgType === 'love') {
-                    badgeHtml = `<span class="msg-badge badge-love">💖 Love Feel</span>`;
-                } else if (data.msgType === 'sweet') {
-                    badgeHtml = `<span class="msg-badge badge-sweet">✨ Appreciation</span>`;
-                }
-
-                if (data.deletedForAll) {
-                    msgElement.innerHTML = `<span class="msg-text" style="font-style: italic; opacity: 0.6;">🚫 This message was deleted</span><div class="msg-meta-wrapper"><span class="msg-time">${timeString}</span></div>`;
-                } else {
-                    msgElement.innerHTML = `${badgeHtml}<span class="msg-text">${sanitizeData(data.text)}</span><div class="msg-meta-wrapper"><span class="msg-time">${timeString}</span>${ticksHtml}</div>`;
-                }
-                messagesBox.appendChild(msgElement);
-            });
-            messagesBox.scrollTop = messagesBox.scrollHeight;
-        });
-        activeUnsubscribeStreams.push(unsubChat);
-
-        // Stream 2: Mood & System Presence Status Listener
-        const unsubPresence = onSnapshot(collection(db, "presence"), (snapshot) => {
-            snapshot.forEach(doc => {
-                if (doc.id === peerUser) {
-                    const data = doc.data();
-                    partnerStatusDisplay.textContent = `${data.mood || 'Available 💖'} | ${data.locationStatus || 'Offline'}`;
-                }
-            });
-        });
-        activeUnsubscribeStreams.push(unsubPresence);
-
-        // Stream 8: Global Configuration Counter Settings
-        const unsubConfig = onSnapshot(collection(db, "config"), (snapshot) => {
-            snapshot.forEach(doc => {
-                if (doc.id === "anniversary") {
-                    const dateVal = doc.data().date;
-                    document.getElementById('anniversaryDatePicker').value = dateVal;
-                    recalculateLoveMetricsTimeline(dateVal);
-                }
-            });
-        });
-        activeUnsubscribeStreams.push(unsubConfig);
-
-        // Stream 9: Gift System Event Overlay Hook Stream
-        const unsubGiftTrigger = onSnapshot(collection(db, "gifts"), (snapshot) => {
-            snapshot.forEach(doc => {
-                if (doc.id === "alert") {
-                    const data = doc.data();
-                    if (data.target === currentUser && data.timestamp > Date.now() - 10000) {
-                        fireGiftOverlayAnimation(data.asset, data.label);
-                    }
-                }
-            });
-        });
-        activeUnsubscribeStreams.push(unsubGiftTrigger);
-    }
-
-    // Message Interaction Modal Setup
-    function openMessageDeletionWorkflow(msgId, senderId) {
-        targetedDeletionMsgId = msgId;
-        targetedDeletionMsgSender = senderId;
-        
-        const deleteForEveryoneBtn = document.getElementById('deleteForEveryoneBtn');
-        if (senderId === currentUser) {
-            deleteForEveryoneBtn.classList.remove('hidden');
-        } else {
-            deleteForEveryoneBtn.classList.add('hidden');
-        }
-        document.getElementById('msgActionModal').classList.remove('hidden');
-    }
-
-    function closeMessageDeletionWorkflow() {
-        document.getElementById('msgActionModal').classList.add('hidden');
-        targetedDeletionMsgId = null;
-        targetedDeletionMsgSender = null;
-    }
-
-    document.getElementById('cancelMsgModalBtn').addEventListener('click', closeMessageDeletionWorkflow);
-
-    document.getElementById('deleteForMeBtn').addEventListener('click', async () => {
-        if (!targetedDeletionMsgId) return;
-        try {
-            const docRef = doc(db, "messages", targetedDeletionMsgId);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                const currentArr = docSnap.data().deletedFor || [];
-                if (!currentArr.includes(currentUser)) {
-                    currentArr.push(currentUser);
-                }
-                await setDoc(docRef, { deletedFor: currentArr }, { merge: true });
-            }
-        } catch(e) { console.error(e); }
-        closeMessageDeletionWorkflow();
+  } else {
+    const tokens = inputText.split(/[\s,\-\/]+/).filter(t => t.length > 0);
+    tokens.forEach(tok=>{
+      const num = parseInt(tok, 10);
+      if(!isNaN(num) && num >= 1 && num <= 26){
+        numberCount++;
+        sum += num;
+      }
     });
+  }
 
-    document.getElementById('deleteForEveryoneBtn').addEventListener('click', async () => {
-        if (!targetedDeletionMsgId) return;
-        try {
-            await setDoc(doc(db, "messages", targetedDeletionMsgId), { deletedForAll: true }, { merge: true });
-        } catch(e) { console.error(e); }
-        closeMessageDeletionWorkflow();
-    });
+  document.getElementById('statChars').textContent = charCount;
+  document.getElementById('statLetters').textContent = letterCount;
+  document.getElementById('statNumbers').textContent = numberCount;
+  document.getElementById('statSum').textContent = sum;
+}
 
-    // Clear Chat Functionality Execution
-    document.getElementById('clearChatBtn').addEventListener('click', () => {
-        if (confirm("Clear conversation log from your display pane? (This won't wipe your partner's log)")) {
-            localStorage.setItem(`chatClearedAt_${currentUser}`, Date.now().toString());
-            messagesBox.innerHTML = "";
-        }
-    });
+/* ---------------------- 6. TOAST NOTIFICATIONS ---------------------- */
+function showToast(message, type='default'){
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
 
-    // Profile Settings Execution Component
-    document.getElementById('saveProfileBtn').addEventListener('click', async () => {
-        const btn = document.getElementById('saveProfileBtn');
-        btn.textContent = "Saving to Server...";
-        
-        const name = document.getElementById('profileNameInput').value.trim();
-        const pass = document.getElementById('profilePasswordInput').value;
-        const about = document.getElementById('profileAboutInput').value.trim();
-        const fileInput = document.getElementById('profilePicInput');
-        
-        let photoUrl = document.getElementById('profilePicPreview').src;
-        
-        try {
-            if (fileInput.files[0]) {
-                const file = fileInput.files[0];
-                const storageRef = ref(storage, `profiles/${currentUser}_${Date.now()}`);
-                const snap = await uploadBytes(storageRef, file);
-                photoUrl = await getDownloadURL(snap.ref);
-            }
-            
-            const profileData = { name, about, photoUrl, lastUpdated: Date.now() };
-            if (pass) profileData.password = pass;
-            
-            await setDoc(doc(db, "profiles", currentUser), profileData, { merge: true });
-            
-            btn.textContent = "Changes Saved! ✔";
-            setTimeout(() => { btn.textContent = "Save Profile Changes"; }, 2500);
-            document.getElementById('profilePasswordInput').value = "";
-            
-        } catch (err) {
-            console.error(err);
-            btn.textContent = "Failed to Save!";
-            setTimeout(() => { btn.textContent = "Save Profile Changes"; }, 2500);
-        }
-    });
+  const icon = type === 'success' ? '✅' : (type === 'error' ? '⚠️' : 'ℹ️');
+  toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
 
-    // Message Transmit Execution Core with Added Type Selector Data Payloads
-    sendBtn.addEventListener('click', transmitMessage);
-    messageInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') transmitMessage(); });
+  container.appendChild(toast);
 
-    async function transmitMessage() {
-        const textValue = messageInput.value.trim();
-        const selectedType = msgTypeSelector.value;
-        if (!textValue) return;
-        try {
-            messageInput.value = "";
-            await addDoc(collection(db, "messages"), { 
-                text: textValue, 
-                sender: currentUser, 
-                timestamp: Date.now(),
-                status: 'sent',
-                msgType: selectedType
-            });
-            // Reset dropdown back to default basic chat layout
-            msgTypeSelector.value = "chat";
-        } catch (err) { console.error(err); }
+  // Auto-remove after 2.8s with fade-out animation
+  setTimeout(()=>{
+    toast.classList.add('fade-out');
+    setTimeout(()=> toast.remove(), 350);
+  }, 2800);
+}
+
+/* ---------------------- 7. HISTORY MANAGEMENT ---------------------- */
+const HISTORY_KEY = 'anc_history';
+
+function getHistory(){
+  try{
+    return JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+  } catch(e){
+    return [];
+  }
+}
+
+function saveToHistory(mode, input, output){
+  if(!input.trim() || !output.trim()) return; // don't save empty conversions
+
+  let history = getHistory();
+
+  // Avoid duplicate consecutive entries
+  if(history.length > 0 && history[0].input === input && history[0].mode === mode){
+    return;
+  }
+
+  history.unshift({ mode, input, output, time: new Date().toLocaleString() });
+  history = history.slice(0, 10); // keep only last 10
+
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory(){
+  const list = document.getElementById('historyList');
+  const history = getHistory();
+
+  if(history.length === 0){
+    list.innerHTML = '<div class="history-empty">No conversions yet.</div>';
+    return;
+  }
+
+  list.innerHTML = '';
+  history.forEach((item, idx)=>{
+    const div = document.createElement('div');
+    div.className = 'history-item';
+    const modeLabel = item.mode === 'n2num' ? 'Name → Numbers' : 'Numbers → Name';
+    div.innerHTML = `
+      <div class="history-mode">${modeLabel}</div>
+      <div class="history-text">${escapeHtml(item.input)} → ${escapeHtml(item.output)}</div>
+    `;
+    div.addEventListener('click', ()=> restoreHistory(idx));
+    list.appendChild(div);
+  });
+}
+
+function restoreHistory(idx){
+  const history = getHistory();
+  const item = history[idx];
+  if(!item) return;
+
+  // Switch to the correct tab/mode
+  tabBtns.forEach(b=>{
+    b.classList.toggle('active', b.dataset.mode === item.mode);
+  });
+  currentMode = item.mode;
+  inputLabel.textContent = currentMode === 'n2num' ? 'Enter your text' : 'Enter numbers (space separated, use / for word breaks)';
+
+  inputArea.value = item.input;
+  runConversion();
+  showToast('Restored from history', 'success');
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+document.getElementById('clearHistoryBtn').addEventListener('click', ()=>{
+  localStorage.removeItem(HISTORY_KEY);
+  renderHistory();
+  showToast('History cleared', 'success');
+});
+
+/* ---------------------- 8. EXPORT (TXT / JSON) ---------------------- */
+function downloadFile(filename, content, mimeType){
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById('exportTxtBtn').addEventListener('click', ()=>{
+  const output = document.getElementById('outputBox').textContent;
+  if(!output || document.getElementById('outputBox').classList.contains('empty')){
+    showToast('Nothing to export yet', 'error');
+    return;
+  }
+  downloadFile('alphabet-number-result.txt', output, 'text/plain');
+  showToast('Downloaded as TXT', 'success');
+});
+
+document.getElementById('exportJsonBtn').addEventListener('click', ()=>{
+  const outputBox = document.getElementById('outputBox');
+  if(outputBox.classList.contains('empty')){
+    showToast('Nothing to export yet', 'error');
+    return;
+  }
+  const data = {
+    mode: currentMode,
+    input: inputArea.value,
+    output: outputBox.textContent,
+    stats: {
+      characters: document.getElementById('statChars').textContent,
+      letters: document.getElementById('statLetters').textContent,
+      numbers: document.getElementById('statNumbers').textContent,
+      sum: document.getElementById('statSum').textContent
+    },
+    exportedAt: new Date().toISOString()
+  };
+  downloadFile('alphabet-number-result.json', JSON.stringify(data, null, 2), 'application/json');
+  showToast('Downloaded as JSON', 'success');
+});
+
+/* ---------------------- 9. CLIPBOARD COPY ---------------------- */
+function copyResult(){
+  const outputBox = document.getElementById('outputBox');
+  if(outputBox.classList.contains('empty') || !outputBox.textContent.trim()){
+    showToast('Nothing to copy', 'error');
+    return;
+  }
+  navigator.clipboard.writeText(outputBox.textContent)
+    .then(()=> showToast('Copied to clipboard', 'success'))
+    .catch(()=> showToast('Failed to copy', 'error'));
+}
+document.getElementById('copyBtn').addEventListener('click', copyResult);
+
+/* ---------------------- CLEAR BUTTON ---------------------- */
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+  inputArea.value = '';
+  setOutput('', true);
+  updateStats('');
+  showToast('Cleared', 'success');
+  inputArea.focus();
+});
+
+/* ---------------------- CORE: RUN CONVERSION ---------------------- */
+function setOutput(text, isEmpty){
+  const outputBox = document.getElementById('outputBox');
+  if(isEmpty){
+    outputBox.textContent = 'Your converted result will appear here...';
+    outputBox.classList.add('empty');
+  } else {
+    outputBox.textContent = text;
+    outputBox.classList.remove('empty');
+  }
+}
+
+function runConversion(){
+  const inputText = inputArea.value;
+  updateStats(inputText);
+
+  if(!inputText.trim()){
+    setOutput('', true);
+    return;
+  }
+
+  let result = '';
+  if(currentMode === 'n2num'){
+    result = nameToNumbers(inputText);
+  } else {
+    result = numbersToName(inputText);
+  }
+
+  if(!result.trim()){
+    setOutput('No valid characters found to convert.', false);
+    return;
+  }
+
+  setOutput(result, false);
+  saveToHistory(currentMode, inputText, result);
+}
+
+/* ---------------------- 10. KEYBOARD SHORTCUTS ---------------------- */
+document.addEventListener('keydown', (e)=>{
+  const ctrlOrCmd = e.ctrlKey || e.metaKey;
+
+  // Ctrl + Enter => Convert
+  if(ctrlOrCmd && e.key === 'Enter'){
+    e.preventDefault();
+    runConversion();
+    showToast('Converted', 'success');
+  }
+
+  // Ctrl + L => Clear
+  if(ctrlOrCmd && (e.key === 'l' || e.key === 'L')){
+    e.preventDefault();
+    document.getElementById('clearBtn').click();
+  }
+
+  // Ctrl + C => Copy result (only when not selecting text inside input)
+  if(ctrlOrCmd && (e.key === 'c' || e.key === 'C')){
+    const selection = window.getSelection().toString();
+    const activeIsInput = document.activeElement === inputArea;
+    // Only intercept if user isn't actively selecting text to copy manually
+    if(!selection && !activeIsInput){
+      e.preventDefault();
+      copyResult();
     }
+  }
+});
 
-    // Feature Component Hook: Interactive Mood Module Toggles
-    document.querySelectorAll('.mood-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-            document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const targetMood = btn.getAttribute('data-mood');
-            await setDoc(doc(db, "presence", currentUser), { mood: targetMood }, { merge: true });
-        });
-    });
+/* ---------------------- 11. EVENT WIRING ---------------------- */
 
-    // Feature Component Hook: Live Geo-Location System Synchronization 
-    document.getElementById('locationShareToggle').addEventListener('change', (e) => {
-        if (e.target.checked) {
-            if (navigator.geolocation) {
-                locationWatchId = navigator.geolocation.watchPosition(async (pos) => {
-                    const locStr = `Lat: ${pos.coords.latitude.toFixed(4)}, Lng: ${pos.coords.longitude.toFixed(4)}`;
-                    await setDoc(doc(db, "presence", currentUser), { locationStatus: locStr }, { merge: true });
-                }, () => {}, { enableHighAccuracy: true });
-            }
-        } else {
-            if (locationWatchId) navigator.geolocation.clearWatch(locationWatchId);
-            setDoc(doc(db, "presence", currentUser), { locationStatus: "Offline" }, { merge: true });
-        }
-    });
+// Live conversion while typing
+inputArea.addEventListener('input', runConversion);
 
-    // Feature Component Hook: Live Love Counter Timeline Logic Engine Calculations
-    document.getElementById('anniversaryDatePicker').addEventListener('change', async (e) => {
-        await setDoc(doc(db, "config", "anniversary"), { date: e.target.value });
-    });
+// Convert button (manual trigger, also re-validates)
+document.getElementById('convertBtn').addEventListener('click', ()=>{
+  runConversion();
+  showToast('Converted', 'success');
+});
 
-    function recalculateLoveMetricsTimeline(anniversaryDateString) {
-        if (!anniversaryDateString) return;
-        const startDay = new Date(anniversaryDateString);
-        const rightNow = new Date();
-        
-        const diffTime = Math.abs(rightNow - startDay);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        document.getElementById('daysTogetherDisplay').textContent = diffDays;
+// Re-run conversion when separator or case option changes
+document.getElementById('separatorSelect').addEventListener('change', runConversion);
+document.getElementById('caseSelect').addEventListener('change', runConversion);
 
-        let nextAnniversary = new Date(rightNow.getFullYear(), startDay.getMonth(), startDay.getDate());
-        if (rightNow > nextAnniversary) {
-            nextAnniversary.setFullYear(rightNow.getFullYear() + 1);
-        }
-        const countdownTime = nextAnniversary - rightNow;
-        const countdownDays = Math.ceil(countdownTime / (1000 * 60 * 60 * 24));
-        document.getElementById('anniversaryCountdownDisplay').textContent = `⏳ ${countdownDays} days left until your next anniversary!`;
-    }
-
-    // Feature Component Hook: Gifts Animation Trigger Handler
-    window.triggerGiftDelivery = async function(asset, label) {
-        const peerUser = (currentUser === 'AB') ? 'BA' : 'AB';
-        await setDoc(doc(db, "gifts", "alert"), { asset, label, target: peerUser, timestamp: Date.now() });
-        alert(`Sent a ${label} to your partner!`);
-    };
-
-    function fireGiftOverlayAnimation(asset, label) {
-        const overlay = document.getElementById('giftOverlay');
-        document.getElementById('giftAnimAsset').textContent = asset;
-        document.getElementById('giftAnimText').textContent = `Received a ${label}!`;
-        
-        overlay.classList.add('show');
-        setTimeout(() => { overlay.classList.remove('show'); }, 4000);
-    }
-
-    function sanitizeData(str) {
-        return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
-    }
+/* ---------------------- INITIALIZE ON LOAD ---------------------- */
+window.addEventListener('DOMContentLoaded', ()=>{
+  renderHistory();
+  updateStats('');
+});
 </script>
 </body>
 </html>
