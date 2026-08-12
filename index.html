@@ -1,1085 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Alphabet Number Converter</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enna Pakuriga 💗</title>
 
 <style>
-  /* ================= ROOT VARIABLES / THEME TOKENS ================= */
-  :root{
-    --bg1:#0f0c29;
-    --bg2:#302b63;
-    --bg3:#24243e;
-    --glass-bg: rgba(255,255,255,0.07);
-    --glass-border: rgba(255,255,255,0.18);
-    --text-main:#f5f5fa;
-    --text-sub:#b9b6cf;
-    --accent1:#7f5af0;
-    --accent2:#2cb1bc;
-    --accent3:#ff6ec4;
-    --danger:#ff5470;
-    --success:#2ce8a3;
-    --shadow: 0 8px 32px rgba(0,0,0,0.37);
-    --radius-lg:22px;
-    --radius-md:14px;
-    --radius-sm:8px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,.35) 0 2px, transparent 3px),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,.3) 0 3px, transparent 4px),
+    linear-gradient(135deg, #ff4f91, #ff6b9f, #8e44ff);
+  background-size: 90px 90px, 130px 130px, cover;
+}
+
+.hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.heart {
+  position: absolute;
+  font-size: 50px;
+  opacity: .75;
+  animation: float 7s ease-in-out infinite;
+}
+
+.heart:nth-child(1) {
+  left: 8%;
+  top: 12%;
+}
+
+.heart:nth-child(2) {
+  right: 10%;
+  top: 18%;
+  animation-delay: 1.5s;
+}
+
+.heart:nth-child(3) {
+  left: 15%;
+  bottom: 15%;
+  animation-delay: 3s;
+}
+
+.heart:nth-child(4) {
+  right: 17%;
+  bottom: 12%;
+  animation-delay: 4.5s;
+}
+
+.heart:nth-child(5) {
+  left: 48%;
+  top: 8%;
+  animation-delay: 2s;
+}
+
+.card {
+  width: 90%;
+  max-width: 900px;
+  padding: 80px 30px;
+  text-align: center;
+  border-radius: 36px;
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.5);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 30px 80px rgba(70,0,70,.3);
+}
+
+.small {
+  color: rgba(255,255,255,.9);
+  font-size: 20px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+h1 {
+  color: white;
+  font-size: clamp(55px, 11vw, 125px);
+  font-weight: 900;
+  line-height: .95;
+  letter-spacing: -5px;
+  text-shadow: 0 8px 30px rgba(80,0,60,.3);
+}
+
+.sub {
+  margin-top: 30px;
+  color: white;
+  font-size: 25px;
+}
+
+.pulse {
+  display: inline-block;
+  margin-top: 30px;
+  font-size: 35px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(-8deg);
   }
 
-  /* Light theme overrides */
-  body.light{
-    --bg1:#e0f7fa;
-    --bg2:#fce4ec;
-    --bg3:#f3e5f5;
-    --glass-bg: rgba(255,255,255,0.55);
-    --glass-border: rgba(255,255,255,0.7);
-    --text-main:#231d3a;
-    --text-sub:#5c5573;
-    --shadow: 0 8px 32px rgba(120,100,160,0.18);
+  50% {
+    transform: translateY(-25px) rotate(8deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
   }
 
-  *{ box-sizing:border-box; margin:0; padding:0; }
-
-  html,body{
-    height:100%;
-    font-family:'Segoe UI', system-ui, -apple-system, sans-serif;
-    color:var(--text-main);
-    overflow-x:hidden;
+  50% {
+    transform: scale(1.3);
   }
-
-  /* ================= ANIMATED GRADIENT BACKGROUND ================= */
-  body{
-    background: linear-gradient(120deg, var(--bg1), var(--bg2), var(--bg3), var(--bg1));
-    background-size: 400% 400%;
-    animation: gradientShift 18s ease infinite;
-    min-height:100vh;
-    position:relative;
-    transition: color .4s ease;
-  }
-  @keyframes gradientShift{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
-  }
-
-  /* Floating particles canvas */
-  #particles{
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    z-index:0;
-    pointer-events:none;
-  }
-
-  /* ================= LAYOUT ================= */
-  .container{
-    position:relative;
-    z-index:1;
-    max-width:1100px;
-    margin:0 auto;
-    padding:32px 20px 80px;
-  }
-
-  /* ================= HEADER ================= */
-  header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:16px;
-    margin-bottom:28px;
-  }
-
-  .brand{
-    display:flex;
-    align-items:center;
-    gap:14px;
-  }
-  .brand-icon{
-    width:52px; height:52px;
-    border-radius:16px;
-    background:linear-gradient(135deg,var(--accent1),var(--accent2));
-    display:flex; align-items:center; justify-content:center;
-    font-size:24px;
-    box-shadow:0 0 24px rgba(127,90,240,0.6);
-    flex-shrink:0;
-  }
-  .brand h1{
-    font-size:1.5rem;
-    font-weight:700;
-    letter-spacing:0.5px;
-  }
-  .brand p{
-    font-size:0.82rem;
-    color:var(--text-sub);
-  }
-
-  /* theme switch button */
-  .theme-toggle{
-    width:50px; height:50px;
-    border-radius:50%;
-    background:var(--glass-bg);
-    border:1px solid var(--glass-border);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    display:flex; align-items:center; justify-content:center;
-    cursor:pointer;
-    font-size:22px;
-    transition: transform .3s ease, box-shadow .3s ease;
-    box-shadow: var(--shadow);
-  }
-  .theme-toggle:hover{
-    transform: scale(1.08) rotate(15deg);
-    box-shadow: 0 0 18px var(--accent1);
-  }
-
-  /* ================= GLASS CARD ================= */
-  .glass{
-    background:var(--glass-bg);
-    border:1px solid var(--glass-border);
-    border-radius:var(--radius-lg);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    box-shadow: var(--shadow);
-    padding:28px;
-    margin-bottom:24px;
-    transition: transform .35s ease, box-shadow .35s ease, background .4s ease, border-color .4s ease;
-  }
-  .glass:hover{
-    transform: translateY(-3px);
-  }
-
-  /* ================= MODE TABS ================= */
-  .tabs{
-    display:flex;
-    gap:10px;
-    margin-bottom:22px;
-    flex-wrap:wrap;
-  }
-  .tab-btn{
-    flex:1;
-    min-width:160px;
-    padding:14px 18px;
-    border-radius:var(--radius-md);
-    border:1px solid var(--glass-border);
-    background:rgba(255,255,255,0.04);
-    color:var(--text-main);
-    font-size:0.95rem;
-    font-weight:600;
-    cursor:pointer;
-    text-align:center;
-    transition: all .3s ease;
-    position:relative;
-    overflow:hidden;
-  }
-  .tab-btn.active{
-    background:linear-gradient(135deg,var(--accent1),var(--accent2));
-    box-shadow:0 0 22px rgba(127,90,240,0.55);
-    border-color:transparent;
-    color:#fff;
-  }
-  .tab-btn:not(.active):hover{
-    background:rgba(255,255,255,0.09);
-    transform: translateY(-2px);
-  }
-
-  /* ================= FORM ELEMENTS ================= */
-  label.field-label{
-    display:block;
-    font-size:0.85rem;
-    color:var(--text-sub);
-    margin-bottom:8px;
-    font-weight:600;
-    letter-spacing:0.3px;
-    text-transform:uppercase;
-  }
-
-  textarea, select{
-    width:100%;
-    background:rgba(255,255,255,0.05);
-    border:1px solid var(--glass-border);
-    border-radius:var(--radius-md);
-    padding:16px;
-    color:var(--text-main);
-    font-size:1.05rem;
-    font-family: inherit;
-    resize:vertical;
-    min-height:110px;
-    transition: border-color .3s ease, box-shadow .3s ease, background .3s ease;
-  }
-  textarea::placeholder{ color:var(--text-sub); opacity:0.7; }
-  textarea:focus, select:focus{
-    outline:none;
-    border-color:var(--accent1);
-    box-shadow:0 0 0 3px rgba(127,90,240,0.25);
-    background:rgba(255,255,255,0.08);
-  }
-
-  .options-row{
-    display:flex;
-    gap:16px;
-    align-items:center;
-    flex-wrap:wrap;
-    margin:18px 0;
-  }
-  .option-group{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
-  select{
-    min-height:auto;
-    padding:10px 14px;
-    cursor:pointer;
-    width:auto;
-  }
-
-  /* ================= BUTTONS ================= */
-  .btn-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-    margin-top:18px;
-  }
-  button{
-    font-family: inherit;
-    cursor:pointer;
-    border:none;
-    border-radius:var(--radius-md);
-    font-weight:600;
-    font-size:0.92rem;
-    padding:13px 22px;
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
-  }
-  button:active{ transform: scale(0.96); }
-
-  .btn-primary{
-    background:linear-gradient(135deg,var(--accent1),var(--accent2));
-    color:#fff;
-    box-shadow:0 0 20px rgba(127,90,240,0.5);
-  }
-  .btn-primary:hover{
-    box-shadow:0 0 32px rgba(127,90,240,0.85);
-    transform: translateY(-2px);
-  }
-
-  .btn-secondary{
-    background:rgba(255,255,255,0.08);
-    color:var(--text-main);
-    border:1px solid var(--glass-border);
-  }
-  .btn-secondary:hover{
-    background:rgba(255,255,255,0.15);
-    transform: translateY(-2px);
-  }
-
-  .btn-danger{
-    background: rgba(255,84,112,0.15);
-    color:var(--danger);
-    border:1px solid rgba(255,84,112,0.4);
-  }
-  .btn-danger:hover{
-    background: rgba(255,84,112,0.28);
-    box-shadow:0 0 18px rgba(255,84,112,0.45);
-  }
-
-  .btn-ghost{
-    background:transparent;
-    color:var(--accent2);
-    border:1px solid rgba(44,177,188,0.4);
-  }
-  .btn-ghost:hover{
-    background:rgba(44,177,188,0.12);
-  }
-
-  /* ================= OUTPUT AREA ================= */
-  .output-box{
-    background:rgba(255,255,255,0.05);
-    border:1px solid var(--glass-border);
-    border-radius:var(--radius-md);
-    padding:20px;
-    min-height:90px;
-    font-size:1.25rem;
-    font-weight:600;
-    letter-spacing:1px;
-    word-break:break-word;
-    line-height:1.6;
-    color:var(--accent3);
-    transition: background .3s ease;
-  }
-  .output-box.empty{
-    color:var(--text-sub);
-    font-weight:400;
-    font-size:0.95rem;
-    letter-spacing:normal;
-  }
-
-  /* ================= STATS GRID ================= */
-  .stats-grid{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px,1fr));
-    gap:14px;
-    margin-top:18px;
-  }
-  .stat-card{
-    background:rgba(255,255,255,0.05);
-    border:1px solid var(--glass-border);
-    border-radius:var(--radius-sm);
-    padding:14px;
-    text-align:center;
-    transition: transform .3s ease, background .3s ease;
-  }
-  .stat-card:hover{
-    transform: translateY(-3px);
-    background:rgba(255,255,255,0.09);
-  }
-  .stat-value{
-    font-size:1.6rem;
-    font-weight:700;
-    background:linear-gradient(135deg,var(--accent1),var(--accent3));
-    -webkit-background-clip:text;
-    background-clip:text;
-    -webkit-text-fill-color:transparent;
-  }
-  .stat-label{
-    font-size:0.72rem;
-    color:var(--text-sub);
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-    margin-top:4px;
-  }
-
-  /* ================= HISTORY ================= */
-  .history-list{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    max-height:280px;
-    overflow-y:auto;
-    padding-right:4px;
-  }
-  .history-list::-webkit-scrollbar{ width:6px; }
-  .history-list::-webkit-scrollbar-thumb{ background:var(--accent1); border-radius:4px; }
-
-  .history-item{
-    background:rgba(255,255,255,0.05);
-    border:1px solid var(--glass-border);
-    border-radius:var(--radius-sm);
-    padding:12px 14px;
-    cursor:pointer;
-    transition: background .25s ease, transform .25s ease;
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-  }
-  .history-item:hover{
-    background:rgba(127,90,240,0.18);
-    transform: translateX(4px);
-  }
-  .history-mode{
-    font-size:0.7rem;
-    text-transform:uppercase;
-    color:var(--accent2);
-    font-weight:700;
-    letter-spacing:0.5px;
-  }
-  .history-text{
-    font-size:0.88rem;
-    color:var(--text-main);
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-  }
-  .history-empty{
-    color:var(--text-sub);
-    font-size:0.88rem;
-    text-align:center;
-    padding:20px;
-  }
-
-  /* ================= SECTION HEADINGS ================= */
-  .section-title{
-    font-size:1.05rem;
-    font-weight:700;
-    margin-bottom:16px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-
-  /* ================= FOOTER ================= */
-  footer{
-    text-align:center;
-    color:var(--text-sub);
-    font-size:0.8rem;
-    margin-top:30px;
-    opacity:0.8;
-  }
-
-  /* ================= TOAST NOTIFICATION ================= */
-  #toast-container{
-    position:fixed;
-    bottom:24px;
-    right:24px;
-    z-index:999;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .toast{
-    background:var(--glass-bg);
-    border:1px solid var(--glass-border);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    color:var(--text-main);
-    padding:14px 20px;
-    border-radius:var(--radius-md);
-    box-shadow:var(--shadow);
-    font-size:0.9rem;
-    font-weight:600;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    min-width:220px;
-    animation: toastIn .35s ease forwards;
-    border-left:4px solid var(--accent1);
-  }
-  .toast.success{ border-left-color: var(--success); }
-  .toast.error{ border-left-color: var(--danger); }
-  .toast.fade-out{ animation: toastOut .35s ease forwards; }
-
-  @keyframes toastIn{
-    from{ opacity:0; transform: translateX(40px); }
-    to{ opacity:1; transform: translateX(0); }
-  }
-  @keyframes toastOut{
-    from{ opacity:1; transform: translateX(0); }
-    to{ opacity:0; transform: translateX(40px); }
-  }
-
-  /* ================= RESPONSIVE GRID FOR MAIN + SIDEBAR ================= */
-  .layout-grid{
-    display:grid;
-    grid-template-columns: 2fr 1fr;
-    gap:24px;
-  }
-  @media (max-width: 860px){
-    .layout-grid{ grid-template-columns: 1fr; }
-    .brand h1{ font-size:1.25rem; }
-    .output-box{ font-size:1.05rem; }
-  }
-
-  .kbd{
-    background:rgba(255,255,255,0.12);
-    border:1px solid var(--glass-border);
-    border-radius:4px;
-    padding:1px 6px;
-    font-size:0.75rem;
-    font-family: monospace;
-  }
-
-  .hint{
-    font-size:0.78rem;
-    color:var(--text-sub);
-    margin-top:10px;
-    line-height:1.5;
-  }
+}
 </style>
 </head>
-<body class="dark">
 
-  <!-- floating particles canvas, animated via JS -->
-  <canvas id="particles"></canvas>
+<body>
 
-  <!-- toast notifications appear here -->
-  <div id="toast-container"></div>
+<div class="hearts">
+  <div class="heart">💗</div>
+  <div class="heart">💕</div>
+  <div class="heart">💖</div>
+  <div class="heart">💞</div>
+  <div class="heart">❤️</div>
+</div>
 
-  <div class="container">
+<div class="card">
+  <div class="small">Just a little question...</div>
 
-    <!-- ============ HEADER ============ -->
-    <header>
-      <div class="brand">
-        <div class="brand-icon">🔤</div>
-        <div>
-          <h1>Alphabet Number Converter</h1>
-          <p>Premium A↔1 conversion tool</p>
-        </div>
-      </div>
-      <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
-    </header>
+  <h1>Enna Pakuriga</h1>
 
-    <div class="layout-grid">
+  <div class="sub">👀💗</div>
 
-      <!-- ============ MAIN CONVERTER PANEL ============ -->
-      <div>
-        <div class="glass">
+  <div class="pulse">♥</div>
+</div>
 
-          <!-- Mode tabs -->
-          <div class="tabs">
-            <button class="tab-btn active" data-mode="n2num">🔢 Name → Numbers</button>
-            <button class="tab-btn" data-mode="num2n">🔡 Numbers → Name</button>
-          </div>
-
-          <!-- Input -->
-          <label class="field-label" id="inputLabel" for="inputArea">Enter your text</label>
-          <textarea id="inputArea" placeholder="Type something, e.g. HELLO WORLD"></textarea>
-
-          <!-- Options -->
-          <div class="options-row">
-            <div class="option-group">
-              <label class="field-label" for="separatorSelect">Output / Space Separator</label>
-              <select id="separatorSelect">
-                <option value="space">Space ( )</option>
-                <option value="dash">Dash (-)</option>
-                <option value="comma">Comma (,)</option>
-              </select>
-            </div>
-            <div class="option-group">
-              <label class="field-label" for="caseSelect">Letter Case (Numbers→Name)</label>
-              <select id="caseSelect">
-                <option value="upper">UPPERCASE</option>
-                <option value="lower">lowercase</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Buttons -->
-          <div class="btn-row">
-            <button class="btn-primary" id="convertBtn">⚡ Convert</button>
-            <button class="btn-secondary" id="copyBtn">📋 Copy</button>
-            <button class="btn-danger" id="clearBtn">🗑️ Clear</button>
-            <button class="btn-ghost" id="exportTxtBtn">⬇️ TXT</button>
-            <button class="btn-ghost" id="exportJsonBtn">⬇️ JSON</button>
-          </div>
-
-          <div class="hint">
-            Shortcuts: <span class="kbd">Ctrl+Enter</span> Convert &nbsp;
-            <span class="kbd">Ctrl+L</span> Clear &nbsp;
-            <span class="kbd">Ctrl+C</span> Copy result (when input not focused for text selection)
-          </div>
-        </div>
-
-        <!-- Output -->
-        <div class="glass">
-          <div class="section-title">✨ Result</div>
-          <div class="output-box empty" id="outputBox">Your converted result will appear here...</div>
-        </div>
-
-        <!-- Stats -->
-        <div class="glass">
-          <div class="section-title">📊 Statistics</div>
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-value" id="statChars">0</div>
-              <div class="stat-label">Characters</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value" id="statLetters">0</div>
-              <div class="stat-label">Letters</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value" id="statNumbers">0</div>
-              <div class="stat-label">Numbers</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value" id="statSum">0</div>
-              <div class="stat-label">Total Sum</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============ SIDEBAR: HISTORY ============ -->
-      <div>
-        <div class="glass">
-          <div class="section-title">🕒 History <span style="font-weight:400;font-size:0.75rem;color:var(--text-sub);">(last 10)</span></div>
-          <div class="history-list" id="historyList">
-            <div class="history-empty">No conversions yet.</div>
-          </div>
-          <div class="btn-row" style="margin-top:14px;">
-            <button class="btn-ghost" id="clearHistoryBtn" style="width:100%;justify-content:center;">Clear History</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <footer>
-      Built By :- S.Harish © Alphabet Number Converter
-    </footer>
-  </div>
-
-<script>
-/* =========================================================================
-   ALPHABET NUMBER CONVERTER — APP LOGIC
-   Sections:
-   1. Particle background animation
-   2. Theme management (dark/light, localStorage)
-   3. Mode/tab management
-   4. Core conversion functions
-   5. Stats calculation
-   6. Toast notifications
-   7. History management (localStorage)
-   8. Export (TXT/JSON)
-   9. Clipboard copy
-   10. Keyboard shortcuts
-   11. Event wiring
-   ========================================================================= */
-
-/* ---------------------- 1. PARTICLE BACKGROUND ---------------------- */
-(function initParticles(){
-  const canvas = document.getElementById('particles');
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  const PARTICLE_COUNT = 45;
-
-  function resize(){
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resize);
-  resize();
-
-  function createParticle(){
-    return {
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 2.5 + 0.8,
-      speedY: Math.random() * 0.4 + 0.08,
-      speedX: (Math.random() - 0.5) * 0.3,
-      opacity: Math.random() * 0.5 + 0.15
-    };
-  }
-
-  for(let i=0;i<PARTICLE_COUNT;i++){ particles.push(createParticle()); }
-
-  function animate(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    particles.forEach(p=>{
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle = `rgba(127,90,240,${p.opacity})`;
-      ctx.fill();
-      p.y -= p.speedY;
-      p.x += p.speedX;
-      if(p.y < -10){
-        p.y = canvas.height + 10;
-        p.x = Math.random() * canvas.width;
-      }
-    });
-    requestAnimationFrame(animate);
-  }
-  animate();
-})();
-
-/* ---------------------- 2. THEME MANAGEMENT ---------------------- */
-const themeToggle = document.getElementById('themeToggle');
-const body = document.body;
-
-function applyTheme(theme){
-  if(theme === 'light'){
-    body.classList.add('light');
-    body.classList.remove('dark');
-    themeToggle.textContent = '☀️';
-  } else {
-    body.classList.add('dark');
-    body.classList.remove('light');
-    themeToggle.textContent = '🌙';
-  }
-  localStorage.setItem('anc_theme', theme);
-}
-
-// Load saved theme on startup, default to dark
-applyTheme(localStorage.getItem('anc_theme') || 'dark');
-
-themeToggle.addEventListener('click', ()=>{
-  const isLight = body.classList.contains('light');
-  applyTheme(isLight ? 'dark' : 'light');
-});
-
-/* ---------------------- 3. MODE / TAB MANAGEMENT ---------------------- */
-let currentMode = 'n2num'; // 'n2num' = Name->Numbers, 'num2n' = Numbers->Name
-const tabBtns = document.querySelectorAll('.tab-btn');
-const inputArea = document.getElementById('inputArea');
-const inputLabel = document.getElementById('inputLabel');
-
-tabBtns.forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    tabBtns.forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    currentMode = btn.dataset.mode;
-
-    if(currentMode === 'n2num'){
-      inputLabel.textContent = 'Enter your text';
-      inputArea.placeholder = 'Type something, e.g. HELLO WORLD';
-    } else {
-      inputLabel.textContent = 'Enter numbers (space separated, use / for word breaks)';
-      inputArea.placeholder = 'e.g. 8 5 12 12 15 / 23 15 18 12 4';
-    }
-    runConversion(); // live update on mode switch too
-  });
-});
-
-/* ---------------------- 4. CORE CONVERSION FUNCTIONS ---------------------- */
-
-// Get the separator character chosen by user for joining numbers
-function getSeparator(){
-  const val = document.getElementById('separatorSelect').value;
-  if(val === 'dash') return '-';
-  if(val === 'comma') return ',';
-  return ' ';
-}
-
-/**
- * Convert a name/text string into alphabet numbers.
- * Rules:
- * - A=1 ... Z=26 (case-insensitive)
- * - Punctuation/symbols ignored
- * - Spaces preserved as "/" word separator
- */
-function nameToNumbers(text){
-  const sep = getSeparator();
-  // Split into words by whitespace, preserve word boundaries with "/"
-  const words = text.split(/\s+/).filter(w => w.length > 0);
-
-  const convertedWords = words.map(word=>{
-    const nums = [];
-    for(const ch of word){
-      const lower = ch.toLowerCase();
-      const code = lower.charCodeAt(0) - 96; // 'a' = 97
-      if(code >= 1 && code <= 26){
-        nums.push(code);
-      }
-      // invalid / punctuation characters are simply ignored
-    }
-    return nums.join(sep);
-  }).filter(w => w.length > 0);
-
-  return convertedWords.join(' / ');
-}
-
-/**
- * Convert numbers back into a name/text string.
- * Rules:
- * - Numbers 1-26 map to A-Z
- * - Words separated by "/"
- * - Numbers within a word separated by space, dash, or comma (auto-detected)
- * - Invalid numbers (out of 1-26 range or NaN) are skipped gracefully
- */
-function numbersToName(text){
-  const caseMode = document.getElementById('caseSelect').value;
-  // Split into words using "/" as the word boundary
-  const wordChunks = text.split('/');
-
-  const convertedWords = wordChunks.map(chunk=>{
-    // Accept space, dash, or comma as number separators within a word
-    const tokens = chunk.split(/[\s,\-]+/).filter(t => t.length > 0);
-    let letters = '';
-    tokens.forEach(tok=>{
-      const num = parseInt(tok, 10);
-      if(!isNaN(num) && num >= 1 && num <= 26){
-        const letter = String.fromCharCode(96 + num); // lowercase base
-        letters += letter;
-      }
-      // invalid numbers (out of range, NaN) are gracefully skipped
-    });
-    return letters;
-  }).filter(w => w.length > 0);
-
-  let result = convertedWords.join(' ');
-  if(caseMode === 'upper'){
-    result = result.toUpperCase();
-  }
-  return result;
-}
-
-/* ---------------------- 5. STATS CALCULATION ---------------------- */
-function updateStats(inputText){
-  const charCount = inputText.length;
-  let letterCount = 0;
-  let numberCount = 0;
-  let sum = 0;
-
-  if(currentMode === 'n2num'){
-    for(const ch of inputText){
-      const lower = ch.toLowerCase();
-      const code = lower.charCodeAt(0) - 96;
-      if(code >= 1 && code <= 26){
-        letterCount++;
-        sum += code;
-      }
-    }
-  } else {
-    const tokens = inputText.split(/[\s,\-\/]+/).filter(t => t.length > 0);
-    tokens.forEach(tok=>{
-      const num = parseInt(tok, 10);
-      if(!isNaN(num) && num >= 1 && num <= 26){
-        numberCount++;
-        sum += num;
-      }
-    });
-  }
-
-  document.getElementById('statChars').textContent = charCount;
-  document.getElementById('statLetters').textContent = letterCount;
-  document.getElementById('statNumbers').textContent = numberCount;
-  document.getElementById('statSum').textContent = sum;
-}
-
-/* ---------------------- 6. TOAST NOTIFICATIONS ---------------------- */
-function showToast(message, type='default'){
-  const container = document.getElementById('toast-container');
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-
-  const icon = type === 'success' ? '✅' : (type === 'error' ? '⚠️' : 'ℹ️');
-  toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
-
-  container.appendChild(toast);
-
-  // Auto-remove after 2.8s with fade-out animation
-  setTimeout(()=>{
-    toast.classList.add('fade-out');
-    setTimeout(()=> toast.remove(), 350);
-  }, 2800);
-}
-
-/* ---------------------- 7. HISTORY MANAGEMENT ---------------------- */
-const HISTORY_KEY = 'anc_history';
-
-function getHistory(){
-  try{
-    return JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
-  } catch(e){
-    return [];
-  }
-}
-
-function saveToHistory(mode, input, output){
-  if(!input.trim() || !output.trim()) return; // don't save empty conversions
-
-  let history = getHistory();
-
-  // Avoid duplicate consecutive entries
-  if(history.length > 0 && history[0].input === input && history[0].mode === mode){
-    return;
-  }
-
-  history.unshift({ mode, input, output, time: new Date().toLocaleString() });
-  history = history.slice(0, 10); // keep only last 10
-
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-  renderHistory();
-}
-
-function renderHistory(){
-  const list = document.getElementById('historyList');
-  const history = getHistory();
-
-  if(history.length === 0){
-    list.innerHTML = '<div class="history-empty">No conversions yet.</div>';
-    return;
-  }
-
-  list.innerHTML = '';
-  history.forEach((item, idx)=>{
-    const div = document.createElement('div');
-    div.className = 'history-item';
-    const modeLabel = item.mode === 'n2num' ? 'Name → Numbers' : 'Numbers → Name';
-    div.innerHTML = `
-      <div class="history-mode">${modeLabel}</div>
-      <div class="history-text">${escapeHtml(item.input)} → ${escapeHtml(item.output)}</div>
-    `;
-    div.addEventListener('click', ()=> restoreHistory(idx));
-    list.appendChild(div);
-  });
-}
-
-function restoreHistory(idx){
-  const history = getHistory();
-  const item = history[idx];
-  if(!item) return;
-
-  // Switch to the correct tab/mode
-  tabBtns.forEach(b=>{
-    b.classList.toggle('active', b.dataset.mode === item.mode);
-  });
-  currentMode = item.mode;
-  inputLabel.textContent = currentMode === 'n2num' ? 'Enter your text' : 'Enter numbers (space separated, use / for word breaks)';
-
-  inputArea.value = item.input;
-  runConversion();
-  showToast('Restored from history', 'success');
-}
-
-function escapeHtml(str){
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-document.getElementById('clearHistoryBtn').addEventListener('click', ()=>{
-  localStorage.removeItem(HISTORY_KEY);
-  renderHistory();
-  showToast('History cleared', 'success');
-});
-
-/* ---------------------- 8. EXPORT (TXT / JSON) ---------------------- */
-function downloadFile(filename, content, mimeType){
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-document.getElementById('exportTxtBtn').addEventListener('click', ()=>{
-  const output = document.getElementById('outputBox').textContent;
-  if(!output || document.getElementById('outputBox').classList.contains('empty')){
-    showToast('Nothing to export yet', 'error');
-    return;
-  }
-  downloadFile('alphabet-number-result.txt', output, 'text/plain');
-  showToast('Downloaded as TXT', 'success');
-});
-
-document.getElementById('exportJsonBtn').addEventListener('click', ()=>{
-  const outputBox = document.getElementById('outputBox');
-  if(outputBox.classList.contains('empty')){
-    showToast('Nothing to export yet', 'error');
-    return;
-  }
-  const data = {
-    mode: currentMode,
-    input: inputArea.value,
-    output: outputBox.textContent,
-    stats: {
-      characters: document.getElementById('statChars').textContent,
-      letters: document.getElementById('statLetters').textContent,
-      numbers: document.getElementById('statNumbers').textContent,
-      sum: document.getElementById('statSum').textContent
-    },
-    exportedAt: new Date().toISOString()
-  };
-  downloadFile('alphabet-number-result.json', JSON.stringify(data, null, 2), 'application/json');
-  showToast('Downloaded as JSON', 'success');
-});
-
-/* ---------------------- 9. CLIPBOARD COPY ---------------------- */
-function copyResult(){
-  const outputBox = document.getElementById('outputBox');
-  if(outputBox.classList.contains('empty') || !outputBox.textContent.trim()){
-    showToast('Nothing to copy', 'error');
-    return;
-  }
-  navigator.clipboard.writeText(outputBox.textContent)
-    .then(()=> showToast('Copied to clipboard', 'success'))
-    .catch(()=> showToast('Failed to copy', 'error'));
-}
-document.getElementById('copyBtn').addEventListener('click', copyResult);
-
-/* ---------------------- CLEAR BUTTON ---------------------- */
-document.getElementById('clearBtn').addEventListener('click', ()=>{
-  inputArea.value = '';
-  setOutput('', true);
-  updateStats('');
-  showToast('Cleared', 'success');
-  inputArea.focus();
-});
-
-/* ---------------------- CORE: RUN CONVERSION ---------------------- */
-function setOutput(text, isEmpty){
-  const outputBox = document.getElementById('outputBox');
-  if(isEmpty){
-    outputBox.textContent = 'Your converted result will appear here...';
-    outputBox.classList.add('empty');
-  } else {
-    outputBox.textContent = text;
-    outputBox.classList.remove('empty');
-  }
-}
-
-function runConversion(){
-  const inputText = inputArea.value;
-  updateStats(inputText);
-
-  if(!inputText.trim()){
-    setOutput('', true);
-    return;
-  }
-
-  let result = '';
-  if(currentMode === 'n2num'){
-    result = nameToNumbers(inputText);
-  } else {
-    result = numbersToName(inputText);
-  }
-
-  if(!result.trim()){
-    setOutput('No valid characters found to convert.', false);
-    return;
-  }
-
-  setOutput(result, false);
-  saveToHistory(currentMode, inputText, result);
-}
-
-/* ---------------------- 10. KEYBOARD SHORTCUTS ---------------------- */
-document.addEventListener('keydown', (e)=>{
-  const ctrlOrCmd = e.ctrlKey || e.metaKey;
-
-  // Ctrl + Enter => Convert
-  if(ctrlOrCmd && e.key === 'Enter'){
-    e.preventDefault();
-    runConversion();
-    showToast('Converted', 'success');
-  }
-
-  // Ctrl + L => Clear
-  if(ctrlOrCmd && (e.key === 'l' || e.key === 'L')){
-    e.preventDefault();
-    document.getElementById('clearBtn').click();
-  }
-
-  // Ctrl + C => Copy result (only when not selecting text inside input)
-  if(ctrlOrCmd && (e.key === 'c' || e.key === 'C')){
-    const selection = window.getSelection().toString();
-    const activeIsInput = document.activeElement === inputArea;
-    // Only intercept if user isn't actively selecting text to copy manually
-    if(!selection && !activeIsInput){
-      e.preventDefault();
-      copyResult();
-    }
-  }
-});
-
-/* ---------------------- 11. EVENT WIRING ---------------------- */
-
-// Live conversion while typing
-inputArea.addEventListener('input', runConversion);
-
-// Convert button (manual trigger, also re-validates)
-document.getElementById('convertBtn').addEventListener('click', ()=>{
-  runConversion();
-  showToast('Converted', 'success');
-});
-
-// Re-run conversion when separator or case option changes
-document.getElementById('separatorSelect').addEventListener('change', runConversion);
-document.getElementById('caseSelect').addEventListener('change', runConversion);
-
-/* ---------------------- INITIALIZE ON LOAD ---------------------- */
-window.addEventListener('DOMContentLoaded', ()=>{
-  renderHistory();
-  updateStats('');
-});
-</script>
 </body>
 </html>
